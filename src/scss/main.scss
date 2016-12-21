@@ -1,0 +1,23 @@
+$primary-text-color: #333;
+$primary-color: #2196F3;
+$secondary-color: #FF5722;
+
+@import 'title-bar';
+@import 'typography';
+@import '../../node_modules/vue-material/dist/vue-material';
+
+*{
+  box-sizing: border-box;
+}
+html{
+  font-size: 62.5%;
+}
+body{
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  color: $primary-text-color;
+}
+html,body{
+  margin: 0;
+}
