@@ -1,10 +1,14 @@
 $primary-text-color: #333;
+$white-text-color: #fff;
 $primary-color: #2196F3;
+$primary-color-hover: #1976D2;
 $secondary-color: #FF5722;
 
 @import 'title-bar';
 @import 'typography';
 @import '../../node_modules/vue-material/dist/vue-material';
+@import 'recorder';
+@import 'transitions';
 
 *{
   box-sizing: border-box;

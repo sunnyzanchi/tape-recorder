@@ -3,21 +3,23 @@
 <!--  -->
 <template lang="html">
   <div>
-    <md-toolbar>
-      <h1 class="md-title">Testing Title</h1>
-    </md-toolbar>
+    <div class="record-holder">
+      <recorder/>
+    </div>
   </div>
 </template>
 <!--  -->
 <script>
 //import TitleBar from '../Components/TitleBar.vue';
 import {mdCore, mdTitle, mdToolbar} from 'vue-material';
+import Recorder from '../Components/Recorder.vue';
 
 export default {
   components: {
     mdCore,
     mdTitle,
-    mdToolbar
+    mdToolbar,
+    Recorder
   },
   computed: {},
   data(){

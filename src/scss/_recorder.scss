@@ -1,0 +1,28 @@
+button.record{
+  border: 0;
+  border-radius: 50%;
+  color: $white-text-color;
+  font-size: 0;
+  height: 56px;
+  margin: auto;
+  padding: 16px;
+  position: relative;
+  transition: .2s background;
+  width: 56px;
+}
+button.record i{
+  left: 50%;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+button.record.ready{
+  background: $primary-color;
+}
+button.record.ready:hover{
+  background: $primary-color-hover;
+}
+.record-holder{
+  display: flex;
+}
