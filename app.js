@@ -9,7 +9,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Index
 app.get('/', function(req, res){
   const options = {
-    root: __dirname + '/public/'
+    root: path.join(__dirname, 'public')
   };
   res.sendFile('index.html', options, function(err){
     if(err){
