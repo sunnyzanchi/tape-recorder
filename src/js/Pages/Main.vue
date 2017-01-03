@@ -1,6 +1,3 @@
-<style lang="css">
-</style>
-<!--  -->
 <template lang="html">
   <div>
     <div class="record-holder">

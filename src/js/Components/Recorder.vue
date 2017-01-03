@@ -1,7 +1,3 @@
-<style lang="css">
-
-</style>
-<!--  -->
 <template lang="html">
   <button class="record ready" @click="toggleRecord">
     <transition name="fade">
@@ -31,6 +27,12 @@ export default {
       }
     }
   },
+  created(){
+    navigator.getUserMedia = ( navigator.getUserMedia ||
+                               navigator.webkitGetUserMedia ||
+                               navigator.mozGetUserMedia ||
+                               navigator.msGetUserMedia);
+  },
   data(){
     return {
       recordStatus: 'ready'
@@ -39,9 +41,57 @@ export default {
   methods: {
     /* Toggles the recording state */
     toggleRecord(){
-      //const ctx = new (AudioContext || webkitAudioContext)();
-      if(this.recordStatus === 'ready') this.recordStatus = 'recording';
-      else this.recordStatus = 'ready';
+      const ctx = new (AudioContext || webkitAudioContext)();
+      const self = this;
+
+      if(navigator.getUserMedia){
+        if(this.recordStatus === 'ready'){
+          this.recordStatus = 'recording';
+          const constraints = {audio: true};
+
+          // Success function
+          const onSuccess = function(stream){
+            console.log(stream);
+            const chunks = [];
+            self.mediaRecorder = new MediaRecorder(stream);
+            self.mediaRecorder.start();
+
+            self.mediaRecorder.ondataavailable = function(e){
+              chunks.push(e.data);
+            }
+
+            // When the recording stops
+            self.mediaRecorder.onstop = function(e){
+              const blob = new Blob(chunks, {type: 'audio/ogg; codecs=opus'});
+              console.log(blob);
+              console.log(stream);
+
+              var audio = document.createElement('audio');
+              audio.setAttribute('controls', '');
+              var audioURL = window.URL.createObjectURL(blob);
+              audio.src = audioURL;
+              document.body.appendChild(audio);
+              console.log(audioURL);
+            }
+          }
+
+          // Failure function
+          const onFailure = function(err){
+            console.log('Error occurred getting user media', err);
+          }
+
+          navigator.getUserMedia(constraints, onSuccess, onFailure);
+        }
+        else{
+          this.recordStatus = 'ready';
+          self.mediaRecorder.stop();
+        }
+      }
+      else{
+        ;;console.log('getUserMedia not supported');
+      }
+
+      ctx.close();
     }
   },
   mounted(){},
