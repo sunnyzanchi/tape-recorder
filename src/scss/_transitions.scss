@@ -1,3 +1,4 @@
+/* Fade transition */
 .fade-enter-active{
   opacity: 1;
   transition: .3s opacity, .3s transform;
@@ -13,4 +14,22 @@
 }
 .fade-leave{
   opacity: 1;
+}
+/* List Transition */
+.list-leave {
+  opacity: 1;
+}
+.list-leave-active {
+  opacity: 0;
+  transition: opacity .3s;
+}
+.list-enter{
+  opacity: 0;
+}
+.list-enter-active{
+  opacity: 1;
+  transition: 1s;
+}
+.list-move {
+  transition: transform 1s;
 }
