@@ -1,38 +1,42 @@
 <template lang="html">
   <md-list class="md-double-line">
-    <md-list-item v-for="audio in audios">
-      <div class="md-list-text-container">
-        <span>{{audio.name}}</span>
-        <span>{{audio.duration | humanizeDuration}}</span>
-      </div>
-      <md-menu md-direction="bottom right">
-        <md-button md-menu-trigger class="md-icon-button md-list-action">
-          <md-icon>more_vert</md-icon>
-        </md-button>
-        <md-menu-content>
-          <md-menu-item>Save</md-menu-item>
-          <md-menu-item>Delete</md-menu-item>
-        </md-menu-content>
-      </md-menu>
-    </md-list-item>
+    <transition-group name="list">
+      <md-list-item v-for="track in tracks" :key="track.id">
+        <div class="md-list-text-container">
+          <span>{{track.name}}</span>
+          <span>{{track.duration | humanizeDuration}}</span>
+        </div>
+        <md-menu md-direction="bottom right">
+          <md-button md-menu-trigger class="md-icon-button md-list-action">
+            <md-icon>more_vert</md-icon>
+          </md-button>
+          <md-menu-content>
+            <md-menu-item>Save</md-menu-item>
+            <md-menu-item @click="deleteTrack(track.id)">Delete</md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </md-list-item>
+    </transition-group>
   </md-list>
 </template>
 <!--  -->
 <script>
 import Dexie from 'dexie';
-import {getAllTracks} from '../db.js';
-import {bus, dbupdate} from '../bus.js';
+
+import {getAllTracks, removeTrack} from '../db.js';
+import {bus, dbupdate, dbtrackremove} from '../bus.js';
 
 export default {
   components: {},
   computed: {},
   created(){
+    bus.$on(dbtrackremove, this.removeTrackFromList);
     bus.$on(dbupdate, this.updateTracks);
     this.updateTracks();
   },
   data(){
     return {
-      audios: []
+      tracks: []
     }
   },
   filters: {
@@ -50,10 +54,20 @@ export default {
     }
   },
   methods: {
+    deleteTrack(id){
+      removeTrack(id);
+    },
+    removeTrackFromList(id){
+      for(let i = 0; i < this.tracks.length; i++){
+        if(id === this.tracks[i].id){
+          this.tracks.splice(i, 1);
+        }
+      }
+    },
     updateTracks(){
       const self = this;
       getAllTracks().then(function(tracks){
-        self.audios = tracks;
+        self.tracks = tracks;
       });
     }
   },
