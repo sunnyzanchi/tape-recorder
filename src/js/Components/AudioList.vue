@@ -5,6 +5,15 @@
         <span>{{audio.name}}</span>
         <span>{{audio.duration | humanizeDuration}}</span>
       </div>
+      <md-menu md-direction="bottom right">
+        <md-button md-menu-trigger class="md-icon-button md-list-action">
+          <md-icon>more_vert</md-icon>
+        </md-button>
+        <md-menu-content>
+          <md-menu-item>Save</md-menu-item>
+          <md-menu-item>Delete</md-menu-item>
+        </md-menu-content>
+      </md-menu>
     </md-list-item>
   </md-list>
 </template>
@@ -12,16 +21,23 @@
 <script>
 import Dexie from 'dexie';
 import {getAllTracks} from '../db.js';
-
+import {bus} from '../bus.js';
+console.log(bus);
 export default {
   components: {},
   computed: {},
   created(){
     const self = this;
-    getAllTracks().then(function(tracks){
-      console.log(tracks);
-      self.audios = tracks;
-    });
+    bus.$on('dbupdate', updateTracks);
+
+    updateTracks();
+
+    function updateTracks(){
+      getAllTracks().then(function(tracks){
+        console.log(tracks);
+        self.audios = tracks;
+      });
+    }
   },
   data(){
     return {
