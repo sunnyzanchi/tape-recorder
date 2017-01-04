@@ -11,7 +11,7 @@ db.open().catch(err=>console.log(err));
 
 /* Gets a list of all saved tracks */
 export function getAllTracks(): Promise<Object[]> {
-  return db.tracks.toArray();
+  return db.tracks.reverse().toArray();
 }
 
 /* Adds a new track to the DB */
