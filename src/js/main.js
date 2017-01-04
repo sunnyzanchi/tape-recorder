@@ -9,21 +9,32 @@ import Vue from 'vue';
 import Main from './Pages/Main.vue';
 Vue.component(Main);
 
-import { MdButton,
+import { MdBackdrop,
+         MdButton,
          MdCore,
          MdToolbar,
          MdIcon,
          MdList,
-         MdListItem } from 'vue-material';
-  Vue.use(MdCore);
-  Vue.use(MdButton);
-  Vue.use(MdIcon);
-  Vue.use(MdToolbar);
-  Vue.use(MdList);
+         MdListItem,
+         MdMenu,
+         MdSidenav,
+         MdTabs,
+         MdWhiteframe } from 'vue-material';
+Vue.use(MdCore);
+Vue.use(MdBackdrop);
+Vue.use(MdButton);
+Vue.use(MdIcon);
+Vue.use(MdToolbar);
+Vue.use(MdList);
+Vue.use(MdMenu);
+Vue.use(MdSidenav);
+Vue.use(MdTabs);
+Vue.use(MdWhiteframe);
+
 
 Vue.material.registerTheme('default', {
     primary: 'blue',
-    accent: 'red',
+    accent: 'orange',
     warn: 'red',
     background: 'white'
 });
