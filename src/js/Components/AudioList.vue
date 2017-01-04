@@ -27,17 +27,8 @@ export default {
   components: {},
   computed: {},
   created(){
-    const self = this;
-    bus.$on(dbupdate, updateTracks);
-
-    updateTracks();
-
-    function updateTracks(){
-      getAllTracks().then(function(tracks){
-        console.log(tracks);
-        self.audios = tracks;
-      });
-    }
+    bus.$on(dbupdate, this.updateTracks);
+    this.updateTracks();
   },
   data(){
     return {
@@ -58,7 +49,14 @@ export default {
       //TODO: Add logic for recordings > an hour
     }
   },
-  methods: {},
+  methods: {
+    updateTracks(){
+      const self = this;
+      getAllTracks().then(function(tracks){
+        self.audios = tracks;
+      });
+    }
+  },
   mounted(){},
   props: []
 }
