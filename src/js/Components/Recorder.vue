@@ -12,21 +12,11 @@
 </template>
 <!--  -->
 <script>
-import Dexie from 'dexie';
+import {addTrack} from '../db.js';
 
 export default {
   components: {},
-  computed: {
-    /* Returns the text for which icon to use */
-    icon(){
-      switch(this.recordStatus){
-        case 'ready':
-          return 'mic';
-        case 'recording':
-          return 'pause';
-      }
-    }
-  },
+  computed: {},
   created(){
     navigator.getUserMedia = ( navigator.getUserMedia ||
                                navigator.webkitGetUserMedia ||
@@ -47,32 +37,35 @@ export default {
       if(navigator.getUserMedia){
         if(this.recordStatus === 'ready'){
           this.recordStatus = 'recording';
+          // We only need audio, don't need to record video
           const constraints = {audio: true};
 
           // Success function
           const onSuccess = function(stream){
-            console.log(stream);
             const chunks = [];
             self.mediaRecorder = new MediaRecorder(stream);
-            self.mediaRecorder.start();
 
+            // Add chunks so we can build the final blob later
             self.mediaRecorder.ondataavailable = function(e){
               chunks.push(e.data);
             }
 
+            // Record the start timestamp so we can calculate the duration later
+            self.mediaRecorder.onstart = function(e){
+              console.log(e);
+              self.mediaRecorder.startTime = e.timeStamp;
+            }
+
             // When the recording stops
             self.mediaRecorder.onstop = function(e){
-              const blob = new Blob(chunks, {type: 'audio/ogg; codecs=opus'});
-              console.log(blob);
-              console.log(stream);
-
-              var audio = document.createElement('audio');
-              audio.setAttribute('controls', '');
-              var audioURL = window.URL.createObjectURL(blob);
-              audio.src = audioURL;
-              document.body.appendChild(audio);
-              console.log(audioURL);
+              var duration = e.timeStamp - self.mediaRecorder.startTime;
+              const data = new Blob(chunks, {type: 'audio/ogg; codecs=opus'});
+              // Add track to the DB
+              var name = prompt('Name: ');
+              addTrack({name, duration, data});
             }
+
+            self.mediaRecorder.start();
           }
 
           // Failure function
@@ -80,6 +73,7 @@ export default {
             console.log('Error occurred getting user media', err);
           }
 
+          // Ask for microphone access
           navigator.getUserMedia(constraints, onSuccess, onFailure);
         }
         else{
