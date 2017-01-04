@@ -21,14 +21,14 @@
 <script>
 import Dexie from 'dexie';
 import {getAllTracks} from '../db.js';
-import {bus} from '../bus.js';
-console.log(bus);
+import {bus, dbupdate} from '../bus.js';
+
 export default {
   components: {},
   computed: {},
   created(){
     const self = this;
-    bus.$on('dbupdate', updateTracks);
+    bus.$on(dbupdate, updateTracks);
 
     updateTracks();
 
