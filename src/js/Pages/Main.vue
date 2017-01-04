@@ -1,5 +1,12 @@
 <template lang="html">
   <div>
+    <md-toolbar>
+      <md-button class="md-icon-button">
+        <md-icon>menu</md-icon>
+      </md-button>
+      <h2 class="md-title">Tape Recorder</h2>
+    </md-toolbar>
+    <audio-list/>
     <div class="record-holder">
       <recorder/>
     </div>
@@ -7,18 +14,16 @@
 </template>
 <!--  -->
 <script>
-//import TitleBar from '../Components/TitleBar.vue';
-import {mdCore, mdTitle, mdToolbar} from 'vue-material';
 import Recorder from '../Components/Recorder.vue';
+import AudioList from '../Components/AudioList.vue';
 
 export default {
   components: {
-    mdCore,
-    mdTitle,
-    mdToolbar,
+    AudioList,
     Recorder
   },
   computed: {},
+  created(){},
   data(){
     return {}
   },
