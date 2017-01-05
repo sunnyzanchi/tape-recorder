@@ -60,7 +60,9 @@ export default {
       removeTrack(id);
     },
 
-    /* Play track */
+    /* Retrieve data from DB based on id and use blob to create audio
+        or if audio src is already created, play it
+    */
     playTrack(){
       const self = this;
       let id = this.track.id;
@@ -82,7 +84,7 @@ export default {
       this.$refs.audio.pause();
     },
 
-    /* Retrieve data from DB based on id and use blob to create audio */
+    /* Toggle play */
     togglePlay(){
       if(!this.playing){
         this.playTrack();
