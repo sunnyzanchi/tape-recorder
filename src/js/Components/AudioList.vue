@@ -21,7 +21,6 @@ export default {
   },
   computed: {},
   created(){
-    bus.$on(dbtrackremove, this.removeTrackFromList);
     bus.$on(dbupdate, this.updateTracks);
     this.updateTracks();
   },
@@ -31,13 +30,6 @@ export default {
     }
   },
   methods: {
-    removeTrackFromList(id){
-      for(let i = 0; i < this.tracks.length; i++){
-        if(id === this.tracks[i].id){
-          this.tracks.splice(i, 1);
-        }
-      }
-    },
     updateTracks(){
       const self = this;
       getAllTracks().then(function(tracks){

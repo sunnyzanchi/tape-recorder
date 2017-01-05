@@ -1,6 +1,6 @@
 // @flow
 import Dexie from 'dexie';
-import {bus, dbupdate, dbtrackremove} from './bus.js';
+import {bus, dbupdate} from './bus.js';
 
 // Create the db if it doesn't exist and connect to it
 const db = new Dexie('Audio');
@@ -31,7 +31,7 @@ export function addTrack({name, duration, data}: trackInfo): Promise<Object[]> {
 export function removeTrack(id: Number): Promise<Object[]> {
   var remove = db.tracks.delete(id);
   remove.then(function(){
-    bus.$emit(dbtrackremove, id);
+    bus.$emit(dbupdate);
   });
   return remove;
 }
