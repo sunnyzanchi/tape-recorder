@@ -32,8 +32,15 @@
 <!--  -->
 <script>
 import {getTrack, removeTrack} from '../db.js';
+import {bus, trackupdate} from '../bus.js';
 
 export default {
+  created(){
+    const self = this;
+    bus.$on(trackupdate, function(id){
+      if(self.track.id !== id) self.stopTrack();
+    });
+  },
   data(){
     return {
       playing: false,
@@ -71,6 +78,7 @@ export default {
       else
         self.playing = true;
 
+      bus.$emit(trackupdate, self.track.id);
       function createAudio({data}){
         let objectURL = URL.createObjectURL(data);
         self.playing = true;
