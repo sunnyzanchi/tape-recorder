@@ -27,6 +27,15 @@ export function addTrack({name, duration, data}: trackInfo): Promise<Object[]> {
   return add;
 }
 
+/* Gets one specific track */
+export function getTrack(id: Number): Promise<Object>{
+  var track = db.tracks
+                 .where('id')
+                 .equals(id)
+                 .toArray(array => array[0]);
+  return track;
+}
+
 /* Removes track from the DB */
 export function removeTrack(id: Number): Promise<Object[]> {
   var remove = db.tracks.delete(id);

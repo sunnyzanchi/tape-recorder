@@ -1,9 +1,12 @@
 <template lang="html">
   <md-list-item>
-    <div class="md-list-text-container">
+    <div class="md-list-text-container" @click="playTrack">
       <span>{{track.name}}</span>
       <span>{{track.duration | humanizeDuration}}</span>
+      <audio v-if="playing" :src="src" controls></audio>
     </div>
+
+    <!-- Right side 'more' menu -->
     <md-menu md-direction="bottom right">
       <md-button md-menu-trigger class="md-icon-button md-list-action">
         <md-icon>more_vert</md-icon>
@@ -17,9 +20,15 @@
 </template>
 <!--  -->
 <script>
-import {removeTrack} from '../db.js';
+import {getTrack, removeTrack} from '../db.js';
 
 export default {
+  data(){
+    return {
+      playing: false,
+      src: null
+    };
+  },
   filters: {
     humanizeDuration(duration){
       // duration is in milliseconds
@@ -35,8 +44,23 @@ export default {
     }
   },
   methods: {
+    /* Delete track from DB */
     deleteTrack(id){
       removeTrack(id);
+    },
+
+    /* Retrieve data from DB based on id and use blob to create audio */
+    playTrack(){
+      const self = this;
+      let id = this.track.id;
+      getTrack(id).then(createAudio);
+
+      function createAudio({data}){
+        let objectURL = URL.createObjectURL(data);
+        console.log(objectURL);
+        self.playing = true;
+        self.src = objectURL;
+      }
     }
   },
   props: ['track']
