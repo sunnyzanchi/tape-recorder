@@ -26,3 +26,8 @@ button.record.ready:hover{
 .record-holder{
   display: flex;
 }
+
+.md-button.md-fab.md-fab-bottom-center.pause-button{
+  transform: translateX(calc(50% + 20px));
+  bottom: 24px;
+}

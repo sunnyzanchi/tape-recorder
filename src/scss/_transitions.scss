@@ -34,3 +34,15 @@
 .list-move {
   transition: transform .5s;
 }
+/* Pause Button Slide */
+.md-button.md-fab.md-fab-bottom-center.pause-button-enter{
+  transform: translateX(50%);
+  opacity: 0;
+}
+.md-button.md-fab.md-fab-bottom-center.pause-button-enter-active{
+  opacity: 1;
+}
+.md-button.md-fab.md-fab-bottom-center.pause-button-leave-active{
+  transform: translateX(50%);
+  opacity: 0;
+}

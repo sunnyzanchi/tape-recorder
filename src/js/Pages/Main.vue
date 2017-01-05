@@ -17,19 +17,10 @@
       </md-toolbar>
     </md-sidenav>
 
-    <md-tabs md-centered md-fixed>
-      <!-- List of Recordings -->
-      <md-tab md-icon="list">
-        <audio-list/>
-      </md-tab>
-
-      <!-- Record tab -->
-      <md-tab md-icon="mic">
-        <div class="record-holder">
-          <recorder/>
-        </div>
-      </md-tab>
-    </md-tabs>
+    <audio-list/>
+    <div class="record-holder">
+      <recorder/>
+    </div>
   </div>
 </template>
 <!--  -->

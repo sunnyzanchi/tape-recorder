@@ -1,14 +1,19 @@
 <template lang="html">
-  <button class="record ready" @click="toggleRecord">
-    <transition name="fade">
-      <i class="material-icons"
-         v-if="recordStatus === 'ready'"
-         key="ready">mic</i>
-      <i class="material-icons"
-         v-if="recordStatus === 'recording'"
-         key="recording">pause</i>
-    </transition>
-  </button>
+  <div>
+    <md-button class="md-fab md-fab-bottom-center md-primary" @click="toggleRecord">
+      <transition name="fade">
+        <md-icon v-if="recordStatus === 'ready'"
+           key="ready">mic</md-icon>
+        <md-icon v-if="recordStatus === 'recording'"
+           key="recording">stop</md-icon>
+      </transition>
+    </md-button>
+    <!-- <transition name="pause-button">
+      <md-button v-show="recordStatus === 'recording'" class="md-fab md-mini md-primary md-fab-bottom-center pause-button">
+        <md-icon>pause</md-icon>
+      </md-button>
+    </transition> -->
+  </div>
 </template>
 <!--  -->
 <script>
