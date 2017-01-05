@@ -1,9 +1,20 @@
 <template lang="html">
   <md-list-item>
-    <div class="md-list-text-container" @click="playTrack">
+    <!-- Play icon -->
+    <div class="play-icon-holder" @click="togglePlay">
+      <transition name="fade">
+        <md-icon v-if="playing"
+           key="pause">pause</md-icon>
+        <md-icon v-if="!playing"
+           key="play">play_arrow</md-icon>
+      </transition>
+    </div>
+
+    <!-- Track Info -->
+    <div class="md-list-text-container" @click="togglePlay">
       <span>{{track.name}}</span>
       <span>{{track.duration | humanizeDuration}}</span>
-      <audio v-if="playing" :src="src" controls></audio>
+      <audio v-show="playing" :src="src" autoplay ref="audio"></audio>
     </div>
 
     <!-- Right side 'more' menu -->
@@ -50,14 +61,19 @@ export default {
     },
 
     /* Retrieve data from DB based on id and use blob to create audio */
-    playTrack(){
+    togglePlay(){
       const self = this;
-      let id = this.track.id;
-      getTrack(id).then(createAudio);
+      if(!this.playing){
+        let id = this.track.id;
+        getTrack(id).then(createAudio);
+      }
+      else{
+        self.playing = false;
+        self.$refs.audio.pause();
+      }
 
       function createAudio({data}){
         let objectURL = URL.createObjectURL(data);
-        console.log(objectURL);
         self.playing = true;
         self.src = objectURL;
       }
