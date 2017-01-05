@@ -22,6 +22,7 @@
 .list-leave-active {
   opacity: 0;
   transition: opacity .3s;
+  position: absolute;
 }
 .list-enter{
   opacity: 0;
@@ -31,5 +32,5 @@
   transition: 1s;
 }
 .list-move {
-  transition: transform 1s;
+  transition: transform .5s;
 }
