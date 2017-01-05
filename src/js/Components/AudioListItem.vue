@@ -74,12 +74,12 @@ export default {
       const self = this;
       let id = this.track.id;
       if(!this.src)
-        getTrack(id).then(createAudio);
+        createAudio(this.track.data);
       else
         self.playing = true;
 
       bus.$emit(trackupdate, self.track.id);
-      function createAudio({data}){
+      function createAudio(data){
         let objectURL = URL.createObjectURL(data);
         self.playing = true;
         self.src = objectURL;
