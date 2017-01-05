@@ -60,23 +60,37 @@ export default {
       removeTrack(id);
     },
 
-    /* Retrieve data from DB based on id and use blob to create audio */
-    togglePlay(){
+    /* Play track */
+    playTrack(){
       const self = this;
-      if(!this.playing){
-        let id = this.track.id;
+      let id = this.track.id;
+      if(!this.src)
         getTrack(id).then(createAudio);
-      }
-      else{
-        self.playing = false;
-        self.$refs.audio.pause();
-      }
+      else
+        self.playing = true;
 
       function createAudio({data}){
         let objectURL = URL.createObjectURL(data);
         self.playing = true;
         self.src = objectURL;
       }
+    },
+
+    /* Stop track */
+    stopTrack(){
+      this.playing = false;
+      this.$refs.audio.pause();
+    },
+
+    /* Retrieve data from DB based on id and use blob to create audio */
+    togglePlay(){
+      if(!this.playing){
+        this.playTrack();
+      }
+      else{
+        this.stopTrack();
+      }
+
     }
   },
   props: ['track']
