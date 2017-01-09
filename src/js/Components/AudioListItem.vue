@@ -49,14 +49,17 @@ export default {
   },
   filters: {
     humanizeDuration(duration){
-      // duration is in milliseconds
-      duration = duration / 1000;
+      // Chrome uses a DOMHighResTimeStamp, which will have a decimal
+      if(String(duration).indexOf('.') > 0)
+        duration = duration / 1000;
+      else duration = duration / 1000000;
       duration = Math.floor(duration);
       if(duration < 1) return 'Less than 1 second';
       if(duration === 1) return '1 second';
       if(duration < 60) return `${duration} seconds`;
       var minutes = Math.floor(duration / 60);
       var seconds = duration % 60;
+      seconds = String(seconds).length === 1 ? '0' + seconds : seconds;
       return `${minutes}:${seconds}`;
       //TODO: Add logic for recordings > an hour
     }
