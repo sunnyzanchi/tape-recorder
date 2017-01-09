@@ -1,0 +1,11 @@
+{
+    "background_color": "#2196F3",
+    "description": "Simple recorder app",
+    "display": "standalone",
+    "lang": "en-US",
+    "name": "Tape Recorder",
+    "orientation": "portrait-primary",
+    "short_name": "Tape Recorder",
+    "start_url": ".",
+    "theme_color": "#2196F3"
+}

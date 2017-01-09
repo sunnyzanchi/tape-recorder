@@ -50,6 +50,7 @@ jspm_packages
 public/*
 !public/index.html
 !public/favicon.ico
+!public/manifest.json
 
 # Google Drive App Creds
 client_id.json
