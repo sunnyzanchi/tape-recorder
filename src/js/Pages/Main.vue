@@ -8,6 +8,15 @@
       <h2 class="md-title">Tape Recorder</h2>
     </md-toolbar>
 
+    <!-- Name track dialog -->
+    <md-dialog-prompt
+      md-title="Enter track name"
+      md-ok-text="Ok"
+      @close="dialogClose"
+      v-model="dialogInput"
+      ref="saveTrack">
+    </md-dialog-prompt>
+
     <!-- Side drawer -->
     <md-sidenav class="md-left" ref="leftSidenav">
       <md-toolbar class="md-large">
@@ -28,19 +37,40 @@
 import Recorder from '../Components/Recorder.vue';
 import AudioList from '../Components/AudioList.vue';
 
+import {bus, dialogcancel, dialogsubmit, dialogupdate} from '../bus.js';
+
 export default {
   components: {
     AudioList,
     Recorder
   },
   computed: {},
-  created(){},
+  created(){
+    const self = this;
+    bus.$on(dialogupdate, function(e){
+      self.dialogTimeStamp = e.timeStamp;
+      self.$refs[e.name].open();
+    });
+  },
   data(){
-    return {}
+    return {
+      dialogInput: '',
+      dialogTimeStamp: ''
+    }
   },
   methods: {
     changePageReciever(){
       console.log('test');
+    },
+    dialogClose(type){
+      const self = this;
+      if(type === 'ok')
+        bus.$emit(dialogsubmit, {name: self.dialogInput, timeStamp: self.dialogTimeStamp});
+      if(type === 'cancel')
+        bus.$emit(dialogcancel, self.dialogTimeStamp);
+
+      this.dialogInput = '';
+      this.dialogTimeStamp = '';
     },
     toggleLeftSidenav() {
       this.$refs.leftSidenav.toggle();

@@ -18,6 +18,7 @@
 <!--  -->
 <script>
 import {addTrack} from '../db.js';
+import {bus, dialogcancel, dialogsubmit, dialogupdate} from '../bus.js';
 
 export default {
   components: {},
@@ -65,9 +66,30 @@ export default {
             self.mediaRecorder.onstop = function(e){
               var duration = e.timeStamp - self.mediaRecorder.startTime;
               const data = new Blob(chunks, {type: 'audio/ogg; codecs=opus'});
-              // Add track to the DB
-              var name = prompt('Name: ');
-              addTrack({name, duration, data});
+
+              // Pop the dialog to get the name
+              bus.$emit(dialogupdate, {name: 'saveTrack', timeStamp: e.timeStamp});
+
+              // When the name is submitted
+              bus.$on(dialogsubmit, function({name, timeStamp}){
+                console.log(timeStamp);
+                console.log(e)
+                if(e.timeStamp === timeStamp){
+                  // Add track to the DB
+                  addTrack({name, duration, data});
+                  bus.$off(dialogsubmit);
+                  bus.$off(dialogcancel);
+                }
+              });
+
+              // If the dialog box is cancelled
+              bus.$on(dialogcancel, function(timeStamp){
+                if(e.timeStamp === timeStamp){
+                  bus.$off(dialogsubmit);
+                  bus.$off(dialogcancel);
+                }
+              });
+
             }
 
             self.mediaRecorder.start();
