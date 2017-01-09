@@ -9,28 +9,8 @@ import Vue from 'vue';
 import Main from './Pages/Main.vue';
 Vue.component(Main);
 
-import { MdBackdrop,
-         MdButton,
-         MdCore,
-         MdToolbar,
-         MdIcon,
-         MdList,
-         MdListItem,
-         MdMenu,
-         MdSidenav,
-         MdTabs,
-         MdWhiteframe } from 'vue-material';
-Vue.use(MdCore);
-Vue.use(MdBackdrop);
-Vue.use(MdButton);
-Vue.use(MdIcon);
-Vue.use(MdToolbar);
-Vue.use(MdList);
-Vue.use(MdMenu);
-Vue.use(MdSidenav);
-Vue.use(MdTabs);
-Vue.use(MdWhiteframe);
-
+import VueMaterial from 'vue-material';
+Vue.use(VueMaterial);
 
 Vue.material.registerTheme('default', {
     primary: 'blue',
