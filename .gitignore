@@ -49,6 +49,7 @@ jspm_packages
 # Bundles
 public/*
 !public/index.html
+!public/favicon.ico
 
 # Google Drive App Creds
 client_id.json
