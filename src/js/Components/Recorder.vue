@@ -24,10 +24,39 @@ export default {
   components: {},
   computed: {},
   created(){
-    navigator.getUserMedia = ( navigator.getUserMedia ||
-                               navigator.webkitGetUserMedia ||
-                               navigator.mozGetUserMedia ||
-                               navigator.msGetUserMedia);
+
+    /*
+    ** MDN getUserMedia Polyfill
+    */
+
+    // Older browsers might not implement mediaDevices at all, so we set an empty object first
+    if (navigator.mediaDevices === undefined) {
+      navigator.mediaDevices = {};
+    }
+
+    // Some browsers partially implement mediaDevices. We can't just assign an object
+    // with getUserMedia as it would overwrite existing properties.
+    // Here, we will just add the getUserMedia property if it's missing.
+    if (navigator.mediaDevices.getUserMedia === undefined) {
+      navigator.mediaDevices.getUserMedia = function(constraints) {
+
+        // First get ahold of the legacy getUserMedia, if present
+        var getUserMedia = (navigator.getUserMedia ||
+          navigator.webkitGetUserMedia ||
+          navigator.mozGetUserMedia);
+
+        // Some browsers just don't implement it - return a rejected promise with an error
+        // to keep a consistent interface
+        if (!getUserMedia) {
+          return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+        }
+
+        // Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
+        return new Promise(function(resolve, reject) {
+          getUserMedia.call(navigator, constraints, resolve, reject);
+        });
+      }
+    }
   },
   data(){
     return {
@@ -40,77 +69,72 @@ export default {
       const ctx = new (AudioContext || webkitAudioContext)();
       const self = this;
 
-      if(navigator.getUserMedia){
-        if(this.recordStatus === 'ready'){
-          this.recordStatus = 'recording';
-          // We only need audio, don't need to record video
-          const constraints = {audio: true};
+      if(this.recordStatus === 'ready'){
+        this.recordStatus = 'recording';
+        // We only need audio, don't need to record video
+        const constraints = {audio: true};
 
-          // Success function
-          const onSuccess = function(stream){
-            const chunks = [];
-            self.mediaRecorder = new MediaRecorder(stream);
+        // Success function
+        const onSuccess = function(stream){
+          const chunks = [];
+          self.mediaRecorder = new MediaRecorder(stream);
 
-            // Add chunks so we can build the final blob later
-            self.mediaRecorder.ondataavailable = function(e){
-              chunks.push(e.data);
-            }
-
-            // Record the start timestamp so we can calculate the duration later
-            self.mediaRecorder.onstart = function(e){
-              console.log(e);
-              self.mediaRecorder.startTime = e.timeStamp;
-            }
-
-            // When the recording stops
-            self.mediaRecorder.onstop = function(e){
-              var duration = e.timeStamp - self.mediaRecorder.startTime;
-              const data = new Blob(chunks, {type: 'audio/ogg; codecs=opus'});
-
-              // Pop the dialog to get the name
-              bus.$emit(dialogupdate, {name: 'saveTrack', timeStamp: e.timeStamp});
-
-              // When the name is submitted
-              bus.$on(dialogsubmit, function({name, timeStamp}){
-                console.log(timeStamp);
-                console.log(e)
-                if(e.timeStamp === timeStamp){
-                  // Add track to the DB
-                  addTrack({name, duration, data});
-                  bus.$off(dialogsubmit);
-                  bus.$off(dialogcancel);
-                }
-              });
-
-              // If the dialog box is cancelled
-              bus.$on(dialogcancel, function(timeStamp){
-                if(e.timeStamp === timeStamp){
-                  bus.$off(dialogsubmit);
-                  bus.$off(dialogcancel);
-                }
-              });
-
-            }
-
-            self.mediaRecorder.start();
+          // Add chunks so we can build the final blob later
+          self.mediaRecorder.ondataavailable = function(e){
+            chunks.push(e.data);
           }
 
-          // Failure function
-          const onFailure = function(err){
-            console.log('Error occurred getting user media', err);
+          // Record the start timestamp so we can calculate the duration later
+          self.mediaRecorder.onstart = function(e){
+            self.mediaRecorder.startTime = e.timeStamp;
           }
 
-          // Ask for microphone access
-          navigator.getUserMedia(constraints, onSuccess, onFailure);
+          // When the recording stops
+          self.mediaRecorder.onstop = function(e){
+            var duration = e.timeStamp - self.mediaRecorder.startTime;
+            const data = new Blob(chunks, {type: 'audio/ogg; codecs=opus'});
+
+            // Pop the dialog to get the name
+            bus.$emit(dialogupdate, {name: 'saveTrack', timeStamp: e.timeStamp});
+
+            // When the name is submitted
+            bus.$on(dialogsubmit, function({name, timeStamp}){
+              if(e.timeStamp === timeStamp){
+                // Add track to the DB
+                addTrack({name, duration, data});
+                bus.$off(dialogsubmit);
+                bus.$off(dialogcancel);
+              }
+            });
+
+            // If the dialog box is cancelled
+            bus.$on(dialogcancel, function(timeStamp){
+              if(e.timeStamp === timeStamp){
+                bus.$off(dialogsubmit);
+                bus.$off(dialogcancel);
+              }
+            });
+
+          }
+
+          self.mediaRecorder.start();
         }
-        else{
-          this.recordStatus = 'ready';
-          self.mediaRecorder.stop();
+
+        // Failure function
+        const onFailure = function(err){
+          console.log('Error occurred getting user media', err);
         }
+
+        // Ask for microphone access
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then(onSuccess)
+        .catch(onFailure);
       }
       else{
-        ;;console.log('getUserMedia not supported');
+        this.recordStatus = 'ready';
+        self.mediaRecorder.stop();
       }
+
 
       ctx.close();
     }
