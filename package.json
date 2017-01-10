@@ -14,7 +14,8 @@
     "serve-favicon": "^2.3.2",
     "vue": "^2.1.8",
     "vue-material": "^0.5.2",
-    "vue-template-compiler": "^2.1.8"
+    "vue-template-compiler": "^2.1.8",
+    "wavesurfer.js": "^1.2.8"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",

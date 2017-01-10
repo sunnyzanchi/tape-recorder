@@ -14,6 +14,7 @@
     <div class="md-list-text-container" @click="togglePlay">
       <span>{{track.name}}</span>
       <span>{{track.duration | humanizeDuration}}</span>
+      <div ref="trackVisualization"></div>
       <audio v-show="playing" :src="src" autoplay ref="audio"></audio>
     </div>
 
@@ -33,10 +34,12 @@
 <script>
 import {getTrack, removeTrack} from '../db.js';
 import {bus, trackupdate} from '../bus.js';
+import WaveSurfer from 'wavesurfer';
 
 export default {
   created(){
     const self = this;
+
     bus.$on(trackupdate, function(id){
       if(self.track.id !== id) self.stopTrack();
     });
@@ -82,7 +85,7 @@ export default {
         self.playing = true;
         this.$refs.audio.play();
       }
-      
+
       bus.$emit(trackupdate, self.track.id);
       function createAudio(data){
         let objectURL = URL.createObjectURL(data);
@@ -107,6 +110,15 @@ export default {
       }
 
     }
+  },
+  mounted(){
+    const self = this;
+
+    const wave = WaveSurfer.create({
+      container: self.$refs.trackVisualization
+    });
+    console.log(this.track.data);
+    wave.loadBlob(this.track.data);
   },
   props: ['track']
 }

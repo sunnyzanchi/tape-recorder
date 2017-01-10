@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   entry: {
     'js/main': './src/js/main.js',
@@ -8,7 +10,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      vue$: 'vue/dist/vue.common.js'
+      vue$: 'vue/dist/vue.common.js',
+      wavesurfer: path.resolve(__dirname, './node_modules/wavesurfer.js/dist/wavesurfer.js')
     }
   },
   module: {
