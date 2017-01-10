@@ -92,7 +92,7 @@ export default {
           // When the recording stops
           self.mediaRecorder.onstop = function(e){
             var duration = e.timeStamp - self.mediaRecorder.startTime;
-            const data = new Blob(chunks, {type: 'audio/ogg; codecs=opus'});
+            const data = new Blob(chunks, {type: self.mediaRecorder.mimeType});
 
             // Pop the dialog to get the name
             bus.$emit(dialogupdate, {name: 'saveTrack', timeStamp: e.timeStamp});
