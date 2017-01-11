@@ -94,10 +94,17 @@ export default {
       }
     },
 
+    /* Pause track */
+    pauseTrack(){
+      this.playing = false;
+      this.$refs.audio.pause();
+    },
+
     /* Stop track */
     stopTrack(){
       this.playing = false;
       this.$refs.audio.pause();
+      this.$refs.audio.currentTime = 0;
     },
 
     /* Toggle play */
@@ -106,7 +113,7 @@ export default {
         this.playTrack();
       }
       else{
-        this.stopTrack();
+        this.pauseTrack();
       }
 
     }
