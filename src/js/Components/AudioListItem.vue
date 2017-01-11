@@ -112,10 +112,8 @@ export default {
     }
   },
   mounted(){
-    const self = this;
-
     const wave = WaveSurfer.create({
-      container: self.$refs.trackVisualization
+      container: this.$refs.trackVisualization
     });
     console.log(this.track.data);
     wave.loadBlob(this.track.data);
