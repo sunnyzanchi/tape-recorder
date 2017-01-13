@@ -5,7 +5,7 @@ import {bus, dbupdate} from './bus.js';
 // Create the db if it doesn't exist and connect to it
 const db = new Dexie('Audio');
 db.version(1).stores({
-  tracks: '++id, name, duration, data'
+  tracks: '++id, name, duration, data, date'
 });
 db.open().catch(err=>console.log(err));
 
@@ -15,15 +15,16 @@ export function getAllTracks(): Promise<Object[]> {
 }
 
 /* Adds a new track to the DB */
-export function addTrack({name, duration, data}: trackInfo): Promise<Object[]> {
+export function addTrack({name, duration, data, date}: trackInfo): Promise<Object[]> {
   var add = db.tracks.add({
     name,
     duration,
-    data
+    data,
+    date
   });
   add.then(function(){
     bus.$emit(dbupdate);
-  })
+  });
   return add;
 }
 
@@ -48,5 +49,6 @@ export function removeTrack(id: Number): Promise<Object[]> {
 type trackInfo = {
   name: String,
   duration: Number,
-  data: Blob
+  data: Blob,
+  date: Date
 }
