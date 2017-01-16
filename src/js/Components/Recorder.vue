@@ -101,7 +101,7 @@ export default {
             bus.$on(dialogsubmit, function({name, timeStamp}){
               if(e.timeStamp === timeStamp){
                 // Add track to the DB
-                addTrack({name, duration, data});
+                addTrack({name, duration, data, date: new Date});
                 bus.$off(dialogsubmit);
                 bus.$off(dialogcancel);
               }
