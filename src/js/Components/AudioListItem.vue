@@ -14,7 +14,7 @@
     <div class="md-list-text-container" @click="togglePlay">
       <span>{{track.name}}</span>
       <span>{{track.duration | humanizeDuration}}</span>
-      <div ref="trackVisualization"></div>
+      <div v-show="showWaveform && playing" ref="trackVisualization"></div>
       <audio v-show="playing" :src="src" autoplay ref="audio"></audio>
     </div>
 
@@ -47,6 +47,7 @@ export default {
   data(){
     return {
       playing: false,
+      showWaveform: false,
       src: null
     };
   },
@@ -119,10 +120,13 @@ export default {
     }
   },
   mounted(){
+    const self = this;
     const wave = WaveSurfer.create({
       container: this.$refs.trackVisualization
     });
-    console.log(this.track.data);
+    wave.on('ready', function(){
+      self.showWaveform = true;
+    })
     wave.loadBlob(this.track.data);
   },
   props: ['track']
