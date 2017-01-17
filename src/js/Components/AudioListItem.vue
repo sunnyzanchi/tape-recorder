@@ -33,7 +33,7 @@
 <!--  -->
 <script>
 import {getTrack, removeTrack} from '../db.js';
-import {bus, trackupdate} from '../bus.js';
+import {bus, deletecancel, trackdelete, trackupdate} from '../bus.js';
 import WaveSurfer from 'wavesurfer';
 
 export default {
@@ -69,9 +69,21 @@ export default {
     }
   },
   methods: {
-    /* Delete track from DB */
+    /* Delete track from DB, but do it on a timeout so the user can undo */
     deleteTrack(id){
-      removeTrack(id);
+      const self = this;
+
+      bus.$emit(trackdelete, id);
+      let timeout = setTimeout(function(){
+        removeTrack(id);
+      }, 5000);
+
+      bus.$on(deletecancel, function(deleteId){
+        if(deleteId === id){
+          clearTimeout(timeout);
+          self.hidden = false;
+        }
+      });
     },
 
     /* Retrieve data from DB based on id and use blob to create audio

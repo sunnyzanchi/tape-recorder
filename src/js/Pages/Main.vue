@@ -27,9 +27,15 @@
     </md-sidenav>
 
     <audio-list/>
-    <div class="record-holder">
-      <recorder/>
-    </div>
+
+    <recorder/>
+
+    <!-- Undo recording deleted -->
+    <md-snackbar md-position="bottom right" ref="snackbar">
+      <span>Recording deleted</span>
+      <md-button class="md-primary" @click="deleteCancel">Undo</md-button>
+    </md-snackbar>
+
   </div>
 </template>
 <!--  -->
@@ -37,7 +43,7 @@
 import Recorder from '../Components/Recorder.vue';
 import AudioList from '../Components/AudioList.vue';
 
-import {bus, dialogcancel, dialogsubmit, dialogupdate} from '../bus.js';
+import {bus, deletecancel, dialogcancel, dialogsubmit, dialogupdate, trackdelete} from '../bus.js';
 
 export default {
   components: {
@@ -51,14 +57,24 @@ export default {
       self.dialogTimeStamp = e.timeStamp;
       self.$refs[e.name].open();
     });
+
+    bus.$on(trackdelete, function(id){
+      self.deleteId = id;
+      self.$refs.snackbar.open();
+    });
   },
   data(){
     return {
       dialogInput: '',
-      dialogTimeStamp: ''
+      dialogTimeStamp: '',
+      deleteId: Infinity
     }
   },
   methods: {
+    deleteCancel(){
+      bus.$emit(deletecancel, this.deleteId);
+      this.$refs.snackbar.close();
+    },
     changePageReciever(){
       console.log('test');
     },

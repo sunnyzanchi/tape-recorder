@@ -23,11 +23,10 @@ button.record.ready{
 button.record.ready:hover{
   background: $primary-color-hover;
 }
-.record-holder{
-  display: flex;
-}
-
 .md-button.md-fab.md-fab-bottom-center.pause-button{
   transform: translateX(calc(50% + 20px));
   bottom: 24px;
+}
+.md-has-toast .md-fab.md-fab-bottom-center{
+  transform: translateX(-50%) translateY(-40px);
 }
