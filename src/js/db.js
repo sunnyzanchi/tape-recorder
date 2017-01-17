@@ -20,7 +20,7 @@ export function addTrack({name, duration, data, date}: trackInfo): Promise<Objec
     name,
     duration,
     data,
-    date
+    date: new Date
   });
   add.then(function(){
     bus.$emit(dbupdate);
