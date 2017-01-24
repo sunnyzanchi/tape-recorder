@@ -5,8 +5,9 @@ Work in progress Web app for recording audio using the Web Audio and MediaStream
 Build
 -----
 1. Make sure gulp is installed globally. `npm i -g gulp` or `yarn add -g gulp`
-2. Run `gulp`
-3. App is running on port 3000 and listening for changes
+2. Run `yarn`
+3. Run `gulp`
+4. App is running on port 3000 and listening for changes
 
 
 Goals
