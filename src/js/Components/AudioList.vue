@@ -11,7 +11,7 @@
 <!--  -->
 <script>
 import {getAllTracks, removeTrack} from '../db.js';
-import {bus, dbupdate, dbtrackremove} from '../bus.js';
+import {bus, dbupdate} from '../bus.js';
 
 import AudioListItem from './AudioListItem.vue';
 

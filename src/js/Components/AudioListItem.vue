@@ -1,3 +1,14 @@
+<style>
+  .play-icon-holder{
+    height: 24px;
+    position: relative;
+    width: 48px
+  }
+  .play-icon-holder .md-icon{
+    position: absolute;
+  }
+</style>
+<!--  -->
 <template lang="html">
   <md-list-item>
     <!-- Play icon -->

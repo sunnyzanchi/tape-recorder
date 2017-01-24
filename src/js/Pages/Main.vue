@@ -1,3 +1,8 @@
+<style>
+  .sidenav-content{
+    padding: 15px;
+  }
+</style>
 <template lang="html">
   <div>
     <!-- Title bar -->
@@ -24,6 +29,15 @@
           <h3 class="md-title">Sidenav content</h3>
         </div>
       </md-toolbar>
+
+      <div class="sidenav-content">
+        <md-icon>play_arrow</md-icon>
+        <span>Metronome</span>
+        <md-input-container>
+          <label>BPM</label>
+          <md-input md-inline type="number"></md-input>
+        </md-input-container>
+      </div>
     </md-sidenav>
 
     <audio-list/>
