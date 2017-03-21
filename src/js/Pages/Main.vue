@@ -7,7 +7,7 @@
   <div>
     <!-- Title bar -->
     <md-toolbar>
-      <md-button class="md-icon-button" @click="toggleLeftSidenav">
+      <md-button class="md-icon-button" @click.native="toggleLeftSidenav">
         <md-icon>menu</md-icon>
       </md-button>
       <h2 class="md-title">Tape Recorder</h2>
@@ -16,7 +16,7 @@
     <!-- Name track dialog -->
     <md-dialog-prompt
       md-title="Enter track name"
-      md-ok-text="Ok"
+      md-ok-text="Save"
       @close="dialogClose"
       v-model="dialogInput"
       ref="saveTrack">
