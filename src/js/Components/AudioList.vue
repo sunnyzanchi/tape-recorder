@@ -30,11 +30,8 @@ export default {
     }
   },
   methods: {
-    updateTracks(){
-      const self = this;
-      getAllTracks().then(function(tracks){
-        self.tracks = tracks;
-      });
+    async updateTracks(){
+      this.tracks = await getAllTracks();
     }
   },
   mounted(){},
