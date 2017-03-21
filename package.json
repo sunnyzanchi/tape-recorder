@@ -12,10 +12,10 @@
     "dexie": "^1.5.1",
     "express": "^4.14.0",
     "serve-favicon": "^2.3.2",
-    "vue": "^2.1.9",
+    "vue": "^2.2.4",
     "vue-material": "^0.7.1",
     "vue-router": "^2.3.0",
-    "vue-template-compiler": "^2.1.9",
+    "vue-template-compiler": "^2.2.4",
     "wavesurfer.js": "^1.2.8"
   },
   "devDependencies": {
