@@ -35,7 +35,7 @@
 <!--  -->
 <template lang="html">
   <div>
-    <md-button class="md-fab md-fab-bottom-center md-primary" @click="toggleRecord">
+    <md-button class="md-fab md-fab-bottom-center md-primary" @click.native="toggleRecord">
       <transition name="fade">
         <md-icon v-if="recordStatus === 'ready'"
            key="ready">mic</md-icon>
