@@ -23,22 +23,7 @@
     </md-dialog-prompt>
 
     <!-- Side drawer -->
-    <md-sidenav class="md-left" ref="leftSidenav">
-      <md-toolbar class="md-large">
-        <div class="md-toolbar-container">
-          <h3 class="md-title">Sidenav content</h3>
-        </div>
-      </md-toolbar>
-
-      <div class="sidenav-content">
-        <md-icon>play_arrow</md-icon>
-        <span>Metronome</span>
-        <md-input-container>
-          <label>BPM</label>
-          <md-input md-inline type="number"></md-input>
-        </md-input-container>
-      </div>
-    </md-sidenav>
+    <side-nav ref="leftSidenav"/>
 
     <audio-list/>
 
@@ -54,15 +39,17 @@
 </template>
 <!--  -->
 <script>
-import Recorder from 'Components/Recorder.vue';
 import AudioList from 'Components/AudioList.vue';
+import Recorder from 'Components/Recorder.vue';
+import SideNav from 'Components/SideNav.vue';
 
 import {bus, deletecancel, dialogcancel, dialogsubmit, dialogupdate, trackdelete} from '../bus.js';
 
 export default {
   components: {
     AudioList,
-    Recorder
+    Recorder,
+    SideNav
   },
   computed: {},
   created(){
