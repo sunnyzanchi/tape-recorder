@@ -13,7 +13,7 @@
 import {getAllTracks, removeTrack} from '../db.js';
 import {bus, dbupdate} from '../bus.js';
 
-import AudioListItem from './AudioListItem.vue';
+import AudioListItem from 'Components/AudioListItem.vue';
 
 export default {
   components: {

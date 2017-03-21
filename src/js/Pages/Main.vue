@@ -54,8 +54,8 @@
 </template>
 <!--  -->
 <script>
-import Recorder from '../Components/Recorder.vue';
-import AudioList from '../Components/AudioList.vue';
+import Recorder from 'Components/Recorder.vue';
+import AudioList from 'Components/AudioList.vue';
 
 import {bus, deletecancel, dialogcancel, dialogsubmit, dialogupdate, trackdelete} from '../bus.js';
 

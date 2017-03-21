@@ -6,7 +6,7 @@
 
 import Vue from 'vue';
 // Pages
-import Main from './Pages/Main.vue';
+import Main from 'Pages/Main.vue';
 Vue.component(Main);
 
 import VueMaterial from 'vue-material';
