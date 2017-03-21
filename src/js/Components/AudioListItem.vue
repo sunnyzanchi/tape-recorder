@@ -43,7 +43,7 @@
       </md-button>
       <md-menu-content>
         <md-menu-item>Save</md-menu-item>
-        <md-menu-item @click="deleteTrack(track.id)">Delete</md-menu-item>
+        <md-menu-item @click.native="deleteTrack(track.id)">Delete</md-menu-item>
       </md-menu-content>
     </md-menu>
   </md-list-item>

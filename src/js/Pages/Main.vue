@@ -47,7 +47,7 @@
     <!-- Undo recording deleted -->
     <md-snackbar md-position="bottom right" ref="snackbar">
       <span>Recording deleted</span>
-      <md-button class="md-primary" @click="deleteCancel">Undo</md-button>
+      <md-button class="md-primary" @click.native="deleteCancel">Undo</md-button>
     </md-snackbar>
 
   </div>
@@ -99,8 +99,8 @@ export default {
       if(type === 'cancel')
         bus.$emit(dialogcancel, self.dialogTimeStamp);
 
-      this.dialogInput = '';
-      this.dialogTimeStamp = '';
+      this.dialogInput = null;
+      this.dialogTimeStamp = null;
     },
     toggleLeftSidenav() {
       this.$refs.leftSidenav.toggle();
