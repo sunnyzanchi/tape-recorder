@@ -151,6 +151,8 @@ export default {
       self.showWaveform = true;
     })
     wave.loadBlob(this.track.data);
+
+    this.$refs.audio.addEventListener('ended', e => this.playing = false);
   },
   props: ['track']
 }
