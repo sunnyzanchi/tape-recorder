@@ -42,7 +42,7 @@
         <md-icon>more_vert</md-icon>
       </md-button>
       <md-menu-content>
-        <md-menu-item>Save</md-menu-item>
+        <md-menu-item @click.native="saveTrack">Save</md-menu-item>
         <md-menu-item @click.native="deleteTrack(track.id)">Delete</md-menu-item>
       </md-menu-content>
     </md-menu>
@@ -50,8 +50,9 @@
 </template>
 <!--  -->
 <script>
-import {getTrack, removeTrack} from '../db.js';
 import {bus, deletecancel, trackdelete, trackupdate} from '../bus.js';
+import {getTrack, removeTrack} from '../db.js';
+import FileSaver from 'file-saver'
 import WaveSurfer from 'wavesurfer';
 
 export default {
@@ -129,6 +130,10 @@ export default {
     pauseTrack(){
       this.playing = false;
       this.$refs.audio.pause();
+    },
+
+    saveTrack(){
+      FileSaver.saveAs(this.track.data, this.track.name + '.wav');
     },
 
     /* Stop track */
