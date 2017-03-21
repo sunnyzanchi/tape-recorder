@@ -4,12 +4,14 @@ const sass = require('gulp-sass');
 const webpack = require('webpack');
 const path = require('path');
 const pump = require('pump');
-const config = require('./webpack.config.js');
+const config = require('./webpack.config');
 
 
 gulp.task('webpack', function(cb){
-    webpack(config);
-    cb();
+  webpack(config, function(err, stats){
+    if(err) throw err;
+  });
+  cb();
 });
 
 gulp.task('scss', function(cb){
