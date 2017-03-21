@@ -14,6 +14,7 @@
     "serve-favicon": "^2.3.2",
     "vue": "^2.1.9",
     "vue-material": "^0.7.1",
+    "vue-router": "^2.3.0",
     "vue-template-compiler": "^2.1.9",
     "wavesurfer.js": "^1.2.8"
   },

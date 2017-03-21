@@ -5,9 +5,7 @@
 /*****************/
 
 import Vue from 'vue';
-// Pages
-import Main from 'Pages/Main.vue';
-Vue.component(Main);
+import router from './router';
 
 import VueMaterial from 'vue-material';
 Vue.use(VueMaterial);
@@ -20,10 +18,8 @@ Vue.material.registerTheme('default', {
 });
 
 const app = new Vue({
-  el: '#app',
-  data: {
-    page: Main
-  }
+  router,
+  el: '#app'
 });
 
 /* Service Worker registration */
