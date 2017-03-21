@@ -1,18 +1,15 @@
 const gulp = require('gulp');
 const nodemon = require('gulp-nodemon');
 const sass = require('gulp-sass');
-const webpack = require('gulp-webpack');
+const webpack = require('webpack');
 const path = require('path');
 const pump = require('pump');
 const config = require('./webpack.config.js');
 
 
 gulp.task('webpack', function(cb){
-  pump([
-    gulp.src('src/js/main.js'),
-    webpack(config),
-    gulp.dest('public')
-  ],cb);
+    webpack(config);
+    cb();
 });
 
 gulp.task('scss', function(cb){

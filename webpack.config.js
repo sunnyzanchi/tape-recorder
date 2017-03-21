@@ -6,7 +6,8 @@ module.exports = {
     'sw': './src/js/sw.js'
   },
   output: {
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
+    path: 'public'
   },
   resolve: {
     alias: {
@@ -17,15 +18,15 @@ module.exports = {
     }
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel'
+        loader: 'babel-loader'
       },
       {
         test: /\.vue$/,
-        loader: 'vue'
+        loader: 'vue-loader'
       }
     ]
   }
