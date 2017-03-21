@@ -7,10 +7,17 @@
   .play-icon-holder .md-icon{
     position: absolute;
   }
+  .audio-list-item{
+    transition: .1s background;
+  }
+  .audio-list-item:hover{
+    cursor: pointer;
+    background: #eee;
+  }
 </style>
 <!--  -->
 <template lang="html">
-  <md-list-item>
+  <md-list-item class="audio-list-item">
     <!-- Play icon -->
     <div class="play-icon-holder" @click="togglePlay">
       <transition name="fade">
