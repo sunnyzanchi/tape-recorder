@@ -14,6 +14,12 @@
     cursor: pointer;
     background: #eee;
   }
+  .track-info h1,
+  .track-info h2,
+  .track-info h3{
+    font-weight: normal;
+    margin: 0;
+  }
 </style>
 <!--  -->
 <template lang="html">
@@ -29,9 +35,10 @@
     </div>
 
     <!-- Track Info -->
-    <div class="md-list-text-container" @click="togglePlay">
-      <span>{{track.name}}</span>
-      <span>{{track.duration | humanizeDuration}}</span>
+    <div class="md-list-text-container track-info" @click="togglePlay">
+      <h1>{{track.name}}</h1>
+      <h2>{{track.date | humanizeDate}}</h2>
+      <h3>{{track.duration | humanizeDuration}}</h3>
       <div v-show="showWaveform && playing" ref="trackVisualization"></div>
       <audio v-show="playing" :src="src" autoplay ref="audio"></audio>
     </div>
@@ -53,6 +60,7 @@
 import {bus, deletecancel, trackdelete, trackupdate} from '../bus.js';
 import {getTrack, removeTrack} from '../db.js';
 import FileSaver from 'file-saver'
+import moment from 'moment';
 import WaveSurfer from 'wavesurfer';
 
 export default {
@@ -71,6 +79,15 @@ export default {
     };
   },
   filters: {
+    humanizeDate(date){
+      const trackDate = moment(date);
+      const today = moment();
+
+      if(today.year() === trackDate.year())
+        return trackDate.format('MMMM Do');
+
+      return trackDate.format('MMM Do YYYY')
+    },
     humanizeDuration(duration){
       // Chrome uses a DOMHighResTimeStamp, which will have a decimal
       if(String(duration).indexOf('.') > 0)

@@ -1,5 +1,5 @@
 <template lang="html">
-  <md-list class="md-double-line">
+  <md-list class="md-triple-line">
     <transition-group name="list">
       <audio-list-item v-for="track in tracks"
                        :track="track"
