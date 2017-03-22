@@ -43,7 +43,14 @@ import AudioList from 'Components/AudioList.vue';
 import Recorder from 'Components/Recorder.vue';
 import SideNav from 'Components/SideNav.vue';
 
-import {bus, deletecancel, dialogcancel, dialogsubmit, dialogupdate, trackdelete} from '../bus.js';
+import {
+  bus,
+  deletecancel,
+  dialogcancel,
+  dialogsubmit,
+  dialogupdate,
+  trackdelete
+} from '../bus.js';
 
 export default {
   components: {

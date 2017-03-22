@@ -10,8 +10,15 @@
 </template>
 <!--  -->
 <script>
-import {getAllTracks, removeTrack} from '../db.js';
-import {bus, dbupdate} from '../bus.js';
+import {
+  getAllTracks,
+  removeTrack
+} from '../db.js';
+
+import {
+  bus,
+  dbupdate
+} from '../bus.js';
 
 import AudioListItem from 'Components/AudioListItem.vue';
 

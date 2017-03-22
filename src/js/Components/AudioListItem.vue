@@ -57,8 +57,18 @@
 </template>
 <!--  -->
 <script>
-import {bus, deletecancel, trackdelete, trackupdate} from '../bus.js';
-import {getTrack, removeTrack} from '../db.js';
+import {
+  bus,
+  deletecancel,
+  trackdelete,
+  trackupdate
+} from '../bus.js';
+
+import {
+  getTrack,
+  removeTrack
+} from '../db.js';
+
 import FileSaver from 'file-saver'
 import moment from 'moment';
 import WaveSurfer from 'wavesurfer';
