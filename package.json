@@ -1,39 +1,23 @@
 {
   "name": "tape-recorder",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "description": "Web app for recording audio",
-  "main": "app.js",
+  "main": "./src/index.html",
+  "repository": "github.com/zanchi/tape-recorder",
+  "author": "Zanchi",
+  "license": "MIT",
   "scripts": {
-    "dev": "nodemon --exec yarn run start",
-    "prestart": "webpack",
-    "start": "node ./app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Eric Zanchi",
-  "license": "MPL-2.0",
-  "dependencies": {
-    "babel-plugin-transform-async-to-generator": "^6.22.0",
-    "babel-polyfill": "^6.23.0",
-    "dexie": "^1.5.1",
-    "express": "^4.14.0",
-    "file-saver": "^1.3.3",
-    "moment": "^2.18.0",
-    "serve-favicon": "^2.3.2",
-    "vue": "^2.2.4",
-    "vue-material": "^0.7.1",
-    "vue-router": "^2.3.0",
-    "vue-template-compiler": "^2.2.4",
-    "wavesurfer.js": "^1.2.8"
+    "start": "parcel -p 3000 ./src/index.html"
   },
   "devDependencies": {
-    "babel-core": "^6.21.0",
-    "babel-loader": "^6.2.10",
-    "babel-plugin-transform-flow-strip-types": "^6.21.0",
-    "babel-preset-es2015": "^6.18.0",
-    "css-loader": "^0.26.1",
-    "flow-bin": "^0.37.4",
-    "nodemon": "^1.11.0",
-    "vue-loader": "^10.0.2",
-    "webpack": "^2.2.1"
+    "eslint": "^4.17.0",
+    "parcel-bundler": "^1.5.1",
+    "parcel-plugin-vue": "^1.5.0"
+  },
+  "dependencies": {
+    "babel-preset-env": "^1.6.1",
+    "vue": "^2.5.13",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   }
 }

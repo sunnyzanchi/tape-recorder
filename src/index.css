@@ -1,0 +1,14 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  color: #333;
+  font-size: 14px;
+}
+html {
+  font-size: 62.5%;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+}
