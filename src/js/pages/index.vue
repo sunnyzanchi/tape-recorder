@@ -10,6 +10,9 @@ console.log('hit');
 export default {
   data() {
     return {};
+  },
+  mounted() {
+    
   }
 }
 </script>
