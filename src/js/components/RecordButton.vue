@@ -19,7 +19,7 @@
 </style>
 <template>
   <button @click="record">
-    Record
+    {{ buttonText }}
   </button>
 </template>
 <script>
@@ -27,7 +27,7 @@ import { mapActions, mapState } from 'vuex';
 
 export default {
   computed: mapState({
-    buttonText: state => state.isRecording ? 'Record' : 'Recording',
+    buttonText: state => state.isRecording ? 'Recording' : 'Record',
   }),
   methods: mapActions(['record']),
 };
