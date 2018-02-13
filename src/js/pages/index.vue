@@ -2,17 +2,21 @@
 </style>
 <template>
   <div>
-    <p>Hi</p>
+    <Header title="Tape Recorder"/>
+    <TrackList />
   </div>
 </template>
 <script>
-console.log('hit');
+import Header from '../components/Header.vue';
+import TrackList from '../components/TrackList.vue';
+
 export default {
-  data() {
-    return {};
+  components: {
+    Header,
+    TrackList
   },
   mounted() {
-    
+    this.$store.dispatch('getTracks');
   }
 }
 </script>
