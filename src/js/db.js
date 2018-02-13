@@ -6,3 +6,12 @@ db.version(1).stores({
 });
 
 db.open().catch(err => console.log(err));
+
+export const getTracks = () =>
+  db.tracks.reverse().toArray();
+
+export const addTrack = trackInfo =>
+  db.tracks.add({
+    ...trackInfo,
+    date: new Date(),
+  });
