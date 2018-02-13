@@ -18,17 +18,58 @@
   }
 </style>
 <template>
-  <button @click="record">
+  <button @click="toggleRecord">
     {{ buttonText }}
   </button>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
+import * as db from '../db';
+
+const constraints = { audio: true };
 
 export default {
   computed: mapState({
     buttonText: state => state.isRecording ? 'Recording' : 'Record',
+    isRecording: 'isRecording',
   }),
-  methods: mapActions(['record']),
+  data() {
+    return {
+      mediaRecorder: null,
+      startTime: null,
+    };
+  },
+  methods: {
+    ...mapMutations(['startRecording', 'stopRecording']),
+    toggleRecord() {
+      if (this.isRecording) {
+        console.log('stopping recording');
+        this.mediaRecorder.stop();
+        return this.$store.commit('stopRecording');
+      }
+
+      console.log('starting recording');
+      this.$store.commit('startRecording');
+      return navigator.mediaDevices.getUserMedia(constraints)
+        .then(stream => {
+          const chunks = [];
+          const mediaRecorder = new MediaRecorder(stream);
+          this.mediaRecorder = mediaRecorder;
+
+          mediaRecorder.ondataavailable = ({ data }) => chunks.push(data);
+          mediaRecorder.onstart = ({ timeStamp }) => this.startTime = timeStamp;
+          mediaRecorder.onstop = ({ timeStamp }) => {
+            const duration = timeStamp - this.startTime;
+            const data = new Blob(chunks, { type: mediaRecorder.mimeType });
+
+            db.addTrack({
+              data,
+              duration,
+              name: String(Math.random()),
+            });
+          };
+        });
+    },
+  },
 };
 </script>
