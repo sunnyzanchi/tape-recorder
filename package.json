@@ -12,7 +12,7 @@
     "start": "parcel -p 3000 ./src/index.html"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,vue}": [
       "eslint --fix",
       "git add"
     ]
