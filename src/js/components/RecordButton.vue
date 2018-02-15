@@ -23,52 +23,68 @@
   </button>
 </template>
 <script>
-import { mapMutations, mapState } from 'vuex';
-import * as db from '../db';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 const constraints = { audio: true };
 
 export default {
-  computed: mapState({
-    buttonText: state => state.isRecording ? 'Recording' : 'Record',
-    isRecording: 'isRecording',
-  }),
+  computed: {
+    ...mapState(['isRecording']),
+    buttonText() {
+      if (this.waiting) {
+        return 'Waiting';
+      }
+      if (this.isRecording) {
+        return 'Recording';
+      }
+      return 'Record';
+    },
+  },
   data() {
     return {
       mediaRecorder: null,
       startTime: null,
+      waiting: false,
     };
   },
   methods: {
+    ...mapActions(['addTrack']),
     ...mapMutations(['startRecording', 'stopRecording']),
     toggleRecord() {
       if (this.isRecording) {
-        console.log('stopping recording');
         this.mediaRecorder.stop();
-        return this.$store.commit('stopRecording');
+        this.stopRecording();
+      } else {
+        this.waiting = true;
+
+        navigator.mediaDevices.getUserMedia(constraints)
+          .then(stream => {
+            const chunks = [];
+            const mediaRecorder = new MediaRecorder(stream);
+
+            this.waiting = false;
+            this.mediaRecorder = mediaRecorder;
+
+            mediaRecorder.ondataavailable = ({ data }) => chunks.push(data);
+
+            mediaRecorder.onstart = ({ timeStamp }) => this.startTime = timeStamp;
+
+            mediaRecorder.onstop = ({ timeStamp }) => {
+              const duration = timeStamp - this.startTime;
+              const data = new Blob(chunks, { type: mediaRecorder.mimeType });
+
+              this.addTrack({
+                data,
+                duration,
+                name: String(Math.random()),
+              });
+            };
+
+            mediaRecorder.start();
+            this.startRecording();
+          })
+          .catch(err => console.log(err));
       }
-
-      console.log('starting recording');
-      this.$store.commit('startRecording');
-      return navigator.mediaDevices.getUserMedia(constraints)
-        .then(stream => {
-          const chunks = [];
-          const mediaRecorder = new MediaRecorder(stream);
-          this.mediaRecorder = mediaRecorder;
-
-          mediaRecorder.ondataavailable = ({ data }) => chunks.push(data);
-          mediaRecorder.onstart = ({ timeStamp }) => this.startTime = timeStamp;
-          mediaRecorder.onstop = ({ timeStamp }) => {
-            const duration = timeStamp - this.startTime;
-            const data = new Blob(chunks, { type: mediaRecorder.mimeType });
-
-            db.addTrack({
-              data,
-              duration,
-              name: String(Math.random()),
-            });
-          };
-        });
     },
   },
 };
