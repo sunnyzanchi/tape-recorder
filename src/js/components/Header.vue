@@ -1,6 +1,6 @@
 <style scoped>
   h1 {
-    margin: 0; 
+    margin: 0;
   }
   .header {
     background: #1976d2;
@@ -11,14 +11,17 @@
 </style>
 <template functional>
   <div class="header">
-    <h1>{{title}}</h1>
+    <h1>{{ title }}</h1>
   </div>
 </template>
 <script>
 export default {
   props: {
-    title: String
-  }
-}
+    title: {
+      default: 'Header Default',
+      type: String,
+    },
+  },
+};
 </script>
 
