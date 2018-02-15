@@ -7,6 +7,7 @@
   "author": "Zanchi",
   "license": "MIT",
   "scripts": {
+    "lint": "eslint ./src/js",
     "start": "parcel -p 3000 ./src/index.html"
   },
   "devDependencies": {
