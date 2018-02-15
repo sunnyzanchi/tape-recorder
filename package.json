@@ -8,7 +8,11 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint ./src/js",
+    "precommit": "lint-staged",
     "start": "parcel -p 3000 ./src/index.html"
+  },
+  "lint-staged": {
+    "*.js": ["eslint --fix", "git add"]
   },
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -16,6 +20,8 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-vue": "^4.2.2",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.1.0",
     "parcel-bundler": "^1.5.1",
     "parcel-plugin-vue": "^1.5.0"
   },
