@@ -28,25 +28,12 @@
   </ul>
 </template>
 <script>
-import format from 'date-fns/format';
-import isThisYear from 'date-fns/is_this_year';
-import prettyMs from 'pretty-ms';
-import { mapState } from 'vuex';
+
+import { mapGetters } from 'vuex';
 
 export default {
-  computed: {
-    ...mapState({
-      tracks: state => state.tracks.map(track => ({
-        ...track,
-        date: format(
-          track.date,
-          isThisYear(track.date)
-            ? 'MMM Do'
-            : 'MMM Do YYYY',
-        ),
-        duration: prettyMs(track.duration),
-      })),
-    }),
-  },
+  computed: mapGetters({
+    tracks: 'prettyTracks',
+  }),
 };
 </script>
