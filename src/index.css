@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  color: #333;
+  font-family: 'Roboto';
+  font-size: 14px;
+  font-weight: 300;
+}
+h1, h2 {
+  font-weight: 500;
+  margin: 0 0 16px;
+}
+h3, h4, h5, h6 {
+  font-weight: 300;
+  margin: 0 0 12px; 
+}
+html {
+  font-size: 62.5%;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+}
+p {
+  margin: 0 0 16px;
+}
