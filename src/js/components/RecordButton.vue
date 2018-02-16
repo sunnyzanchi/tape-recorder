@@ -52,7 +52,12 @@ export default {
   },
   methods: {
     ...mapActions(['addTrack']),
-    ...mapMutations(['startRecording', 'stopRecording']),
+    ...mapMutations([
+      'setTrackInitialData',
+      'showTrackNamePrompt',
+      'startRecording',
+      'stopRecording',
+    ]),
     toggleRecord() {
       if (this.isRecording) {
         this.mediaRecorder.stop();
@@ -76,11 +81,11 @@ export default {
               const duration = timeStamp - this.startTime;
               const data = new Blob(chunks, { type: mediaRecorder.mimeType });
 
-              this.addTrack({
+              this.setTrackInitialData({
                 data,
                 duration,
-                name: String(Math.random()),
               });
+              this.showTrackNamePrompt();
             };
 
             mediaRecorder.start();
