@@ -1,5 +1,0 @@
-{
-  "ignore": ["public/"],
-  "delay": 5,
-  "ext": "js,vue,json"
-}
