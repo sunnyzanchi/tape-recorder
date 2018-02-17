@@ -3,4 +3,5 @@ export default {
   isRecording: false,
   showPrompt: false,
   tracks: [],
+  playing: false,
 };

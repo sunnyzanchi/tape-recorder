@@ -9,8 +9,14 @@ export default {
   showTrackNamePrompt(state) {
     state.showPrompt = true;
   },
+  startPlaying(state) {
+    state.playing = true;
+  },
   startRecording(state) {
     state.isRecording = true;
+  },
+  stopPlaying(state) {
+    state.playing = false;
   },
   stopRecording(state) {
     state.isRecording = false;
