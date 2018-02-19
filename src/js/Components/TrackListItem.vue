@@ -29,35 +29,46 @@
   </li>
 </template>
 <script>
+import { mapMutations, mapState } from 'vuex';
+
 export default {
   computed: {
+    ...mapState({
+      isPlaying(state) {
+        return this.src === state.playing;
+      },
+    }),
     src() {
       return URL.createObjectURL(this.track.data);
     },
   },
-  data() {
-    return {
-      isPlaying: false,
-    };
-  },
   methods: {
+    ...mapMutations(['startPlaying', 'stopPlaying']),
     togglePlay() {
       if (this.isPlaying) {
-        this.isPlaying = false;
-        this.$refs.audio.stop();
+        this.stopPlaying();
+        this.$refs.audio.pause();
       } else {
-        this.isPlaying = true;
+        this.startPlaying(this.src);
+        this.$refs.audio.currentTime = 0;
         this.$refs.audio.play();
       }
     },
   },
   mounted() {
-    this.$refs.audio.addEventListener('ended', () => this.isPlaying = false);
+    this.$refs.audio.addEventListener('ended', this.stopPlaying);
   },
   props: {
     track: {
       required: true,
       type: Object,
+    },
+  },
+  watch: {
+    isPlaying(newVal) {
+      if (!newVal) {
+        this.$refs.audio.pause();
+      }
     },
   },
 };
