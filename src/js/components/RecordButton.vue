@@ -9,9 +9,6 @@
       0 1px 2px rgba(0,0,0,0.24);
     color: #fff;
     height: 64px;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%);
     transition: .2s background-color;
     width: 64px;
   }
