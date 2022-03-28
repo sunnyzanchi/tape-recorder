@@ -1,8 +1,13 @@
+:root {
+  --c-bg: #111;
+  --c-border: #444;
+}
+
 html,
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  background: #111;
+  background: var(--c-bg);
   color: #fff;
   font-family: 'Helvetica Neue', arial, sans-serif;
   font-weight: 400;
