@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "author": "Zanchi <zanchi@hey.com> (https://github.com/zanchi)",
+  "engines": {
+    "node": "16.14.2"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -15,5 +18,8 @@
     "@preact/preset-vite": "^2.1.5",
     "typescript": "^4.5.4",
     "vite": "^2.8.0"
+  },
+  "volta": {
+    "node": "16.14.2"
   }
 }
