@@ -1,16 +1,18 @@
 import TrackList from './TrackList'
-
-const tracks = [
-  { name: 'ABC' },
-  { name: 'DEF' },
-  { name: 'GHI' },
-  { name: 'KLM' },
-]
+import useAudioEngine, { Status } from './useAudioEngine'
 
 const App = () => {
+  const { play, status, toggleRecord, tracks } = useAudioEngine()
+
   return (
     <>
-      <TrackList tracks={tracks} />
+      {/* for debugging */}
+      <div>{Status[status]}</div>
+      <TrackList onPlay={play} tracks={tracks} />
+
+      <button class="record" onClick={toggleRecord}>
+        REC
+      </button>
     </>
   )
 }

@@ -6,5 +6,11 @@ ol {
 
 li {
   border-bottom: 1px solid var(--c-border);
+  cursor: pointer;
   padding: 24px;
+  transition: 100ms background-color var(--snappy);
+}
+
+li:hover {
+  background: #131313;
 }

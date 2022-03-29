@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Cousine:wght@700&display=swap');
+
 :root {
   --c-bg: #111;
   --c-border: #444;
+  /* TODO: Make this a little better */
+  --snappy: cubic-bezier(0.65, 0, 0.45, 1);
 }
 
 html,
@@ -19,4 +23,26 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+button.record {
+  --spacing: 24px;
+  background: rgb(246, 47, 47);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 14px 28px rgba(40, 0, 0, 0.25), 0 10px 10px rgba(40, 0, 0, 0.22);
+  cursor: pointer;
+  font-family: 'Cousine', sans-serif;
+  font-size: 20px;
+  height: 110px;
+  position: fixed;
+  bottom: var(--spacing);
+  right: var(--spacing);
+  text-transform: uppercase;
+  transition: 100ms background-color var(--snappy);
+  width: 110px;
+}
+
+button.record:hover {
+  background: rgb(246, 30, 30);
 }
