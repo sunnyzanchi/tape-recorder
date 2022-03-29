@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Cousine:wght@700&display=swap');
-
 :root {
   --c-bg: #111;
   --c-border: #444;
@@ -32,6 +30,13 @@ button.record {
   border-radius: 50%;
   box-shadow: 0 14px 28px rgba(40, 0, 0, 0.25), 0 10px 10px rgba(40, 0, 0, 0.22);
   cursor: pointer;
+  /**
+   * Specific characters are requested from Google Fonts
+   * to reduce the font file size.
+   * If the text in this button is changed,
+   * make sure the `link` tag that loads this font
+   * in `index.html` is updated with the new characters
+   */
   font-family: 'Cousine', sans-serif;
   font-size: 20px;
   height: 110px;
