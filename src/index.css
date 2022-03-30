@@ -11,7 +11,7 @@ body {
   -webkit-font-smoothing: antialiased;
   background: var(--c-bg);
   color: #fff;
-  font-family: 'Helvetica Neue', arial, sans-serif;
+  font-family: 'Roboto', 'Helvetica Neue', arial, sans-serif;
   font-weight: 400;
   height: 100%;
   margin: 0;
