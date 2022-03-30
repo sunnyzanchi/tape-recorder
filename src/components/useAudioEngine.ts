@@ -23,16 +23,20 @@ const CONSTRAINTS = { audio: true, video: false }
 const getStatus = (state: AudioState): Status => {
   const { audioReady, mediaRecorder, playing, recording, switchTo } = state
 
-  if (playing && switchTo) return Status.SWITCHING_TRACKS
-  if (playing) return Status.PLAYING
+  // We aren't doing anything.
+  // No audio is playing, the user isn't waiting for recording to start
   if (!recording && !mediaRecorder && !playing) return Status.IDLE
-  // `recording` gets set to true first and we have to wait
-  // for the Promise from getUserMedia to resolve.
-  // This is the WAITING_ON_MIC_ACCESS status.
+
+  // `recording` gets set to true when the user hits record.
+  // We have to wait for the Promise from getUserMedia to resolve
+  // before we start recording.
+  // It resolves with the actual audio stream
+  if (recording && !mediaRecorder) return Status.WAITING_ON_MIC_ACCESS
+
   // Once the Promise resolves, mediaRecorder is set
   // and the engine starts recording audio
   if (recording && mediaRecorder) return Status.RECORDING
-  if (recording && !mediaRecorder) return Status.WAITING_ON_MIC_ACCESS
+
   // When the user stops recording, not all chunks of audio
   // are ready yet. We have to wait for mediaRecorder.onstop to fire
   if (!recording && mediaRecorder && !audioReady)
@@ -41,6 +45,11 @@ const getStatus = (state: AudioState): Status => {
   // After mediaRecorder.onstop fires, we can collect
   // the audio chunks and produce a finished track
   if (!recording && mediaRecorder && audioReady) return Status.SAVING_AUDIO
+
+  if (playing && switchTo) return Status.SWITCHING_TRACKS
+
+  if (playing && !switchTo) return Status.PLAYING
+
   // Something is not right, we should not get here
   console.error(
     `undefined state! Here's the state that got us here: ${Object.keys(
@@ -71,14 +80,19 @@ interface AudioEngine {
 }
 
 const useAudioEngine = (): AudioEngine => {
-  // This has the stream from getUserMedia once the Promise resolves
   // This is true once we have the final chunk from getUserMedia
   const [audioReady, setAudioReady] = useState(false)
+  // Holds the stream from getUserMedia once the Promise resolves
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
+  // Holds the string id if a track is playing
   const [playing, setPlaying] = useState<string | null>(null)
+  // This is true when the user hits record
   const [recording, setRecording] = useState(false)
   const [startTime, setStartTime] = useState<number | null>(null)
   const [stopTime, setStopTime] = useState<number | null>(null)
+  // Holds the string id of the new track
+  // if we're already playing a track and need to stop
+  // the old one before we start the new one
   const [switchTo, setSwitchTo] = useState<string | null>(null)
   const [tracks, setTracks] = useState(new Map<string, Track>())
   const audio = useRef<HTMLAudioElement>()
@@ -133,8 +147,6 @@ const useAudioEngine = (): AudioEngine => {
       return
     }
 
-    // Stop recording and create the final audio track.
-    // Then add it to the list of tracks
     if (status === Status.FINISHED_RECORDING) {
       // TODO: Remove these !s by typeguarding correctly
       mediaRecorder!.stop()
