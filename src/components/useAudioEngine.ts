@@ -159,7 +159,7 @@ const useAudioEngine = (): AudioEngine => {
       const audio = new Blob(chunks.current, {
         type: mediaRecorder!.mimeType,
       })
-      const track = makeTrack({ audio, duration: startTime! - stopTime! })
+      const track = makeTrack({ audio, duration: stopTime! - startTime! })
 
       setTracks((ts) => new Map(ts).set(track.id, track))
       setMediaRecorder(null)
