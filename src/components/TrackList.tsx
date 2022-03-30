@@ -1,6 +1,6 @@
 import { FunctionalComponent } from 'preact'
 
-import './TrackList.css'
+import './TrackList.scss'
 
 export type Track = {
   audio: Blob
