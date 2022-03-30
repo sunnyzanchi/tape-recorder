@@ -1,4 +1,5 @@
 import { FunctionalComponent } from 'preact'
+import { formatDuration } from 'date-fns'
 
 import './TrackList.scss'
 
@@ -18,10 +19,16 @@ const TrackList: FunctionalComponent<Props> = ({ onPlay, tracks }) => {
   const play = (name: string) => () => onPlay(name)
 
   return (
-    <ol class="tracklist">
+    <ol class="track-list">
       {tracks.map((t) => (
         <li key={t.id} onClick={play(t.id)}>
-          <p>{t.name}</p>
+          <p class="track-title">{t.name}</p>
+          <p class="track-duration">
+            {formatDuration(
+              { seconds: Math.ceil(t.duration / 1000) },
+              { format: ['seconds'] }
+            )}
+          </p>
         </li>
       ))}
     </ol>
