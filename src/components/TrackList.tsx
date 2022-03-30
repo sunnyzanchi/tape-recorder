@@ -5,6 +5,7 @@ import './TrackList.scss'
 
 export type Track = {
   audio: Blob
+  created: Date
   duration: number
   id: string
   name: string

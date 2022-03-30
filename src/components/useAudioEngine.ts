@@ -68,6 +68,7 @@ const makeTrack = ({
 }): Track => ({
   id: uuidv4(),
   audio,
+  created: new Date(),
   duration,
   name: format(new Date(), 'MMMM do yyyy @ h:mma'),
 })
