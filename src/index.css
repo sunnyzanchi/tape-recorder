@@ -51,3 +51,7 @@ button.record {
 button.record:hover {
   background: rgb(246, 30, 30);
 }
+
+p {
+  margin: 0;
+}
