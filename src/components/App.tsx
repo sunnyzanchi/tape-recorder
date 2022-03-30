@@ -7,7 +7,7 @@ const App = () => {
   return (
     <>
       {/* for debugging */}
-      <div>{Status[status]}</div>
+      {process.env.NODE_ENV === 'development' && <div>{Status[status]}</div>}
       <TrackList onPlay={play} tracks={tracks} />
 
       <button class="record" onClick={toggleRecord}>
