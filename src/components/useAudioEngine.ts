@@ -13,6 +13,7 @@ export enum Status {
   IDLE,
   PLAYING,
   RECORDING,
+  SAVING_AUDIO,
   SWITCHING_TRACKS,
   WAITING_ON_MIC_ACCESS,
 }
@@ -20,7 +21,7 @@ export enum Status {
 const CONSTRAINTS = { audio: true, video: false }
 
 const getStatus = (state: AudioState): Status => {
-  const { mediaRecorder, playing, recording, switchTo } = state
+  const { audioReady, mediaRecorder, playing, recording, switchTo } = state
 
   if (playing && switchTo) return Status.SWITCHING_TRACKS
   if (playing) return Status.PLAYING
@@ -32,8 +33,14 @@ const getStatus = (state: AudioState): Status => {
   // and the engine starts recording audio
   if (recording && mediaRecorder) return Status.RECORDING
   if (recording && !mediaRecorder) return Status.WAITING_ON_MIC_ACCESS
-  if (!recording && mediaRecorder) return Status.FINISHED_RECORDING
+  // When the user stops recording, not all chunks of audio
+  // are ready yet. We have to wait for mediaRecorder.onstop to fire
+  if (!recording && mediaRecorder && !audioReady)
+    return Status.FINISHED_RECORDING
 
+  // After mediaRecorder.onstop fires, we can collect
+  // the audio chunks and produce a finished track
+  if (!recording && mediaRecorder && audioReady) return Status.SAVING_AUDIO
   // Something is not right, we should not get here
   console.error(
     `undefined state! Here's the state that got us here: ${Object.keys(
@@ -65,6 +72,8 @@ interface AudioEngine {
 
 const useAudioEngine = (): AudioEngine => {
   // This has the stream from getUserMedia once the Promise resolves
+  // This is true once we have the final chunk from getUserMedia
+  const [audioReady, setAudioReady] = useState(false)
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
   const [playing, setPlaying] = useState<string | null>(null)
   const [recording, setRecording] = useState(false)
@@ -79,6 +88,7 @@ const useAudioEngine = (): AudioEngine => {
   const chunks = useRef<Blob[]>([])
 
   const status = getStatus({
+    audioReady,
     mediaRecorder: Boolean(mediaRecorder),
     playing: Boolean(playing),
     recording,
@@ -113,7 +123,10 @@ const useAudioEngine = (): AudioEngine => {
       audio.current?.pause()
 
       mediaRecorder!.onstart = ({ timeStamp }) => setStartTime(timeStamp)
-      mediaRecorder!.onstop = ({ timeStamp }) => setStopTime(timeStamp)
+      mediaRecorder!.onstop = ({ timeStamp }) => {
+        setAudioReady(true)
+        setStopTime(timeStamp)
+      }
       mediaRecorder!.ondataavailable = ({ data }) => chunks.current.push(data)
 
       mediaRecorder!.start()
@@ -125,9 +138,12 @@ const useAudioEngine = (): AudioEngine => {
     if (status === Status.FINISHED_RECORDING) {
       // TODO: Remove these !s by typeguarding correctly
       mediaRecorder!.stop()
+    }
 
-      // I think having this before mediaRecorder.stop may have buggy behavior?
-      // Not 100% sure
+    // This waits for mediaRecorder.onstop to fire.
+    // Create the final audio track.
+    // Then add it to the list of tracks
+    if (status === Status.SAVING_AUDIO) {
       const audio = new Blob(chunks.current, {
         type: mediaRecorder!.mimeType,
       })
@@ -135,6 +151,7 @@ const useAudioEngine = (): AudioEngine => {
 
       setTracks((ts) => new Map(ts).set(track.id, track))
       setMediaRecorder(null)
+      setAudioReady(false)
       // If chunks isn't reset, every recording will be cumulative.
       // It was a funny bug when i was first testing recording
       chunks.current = []
