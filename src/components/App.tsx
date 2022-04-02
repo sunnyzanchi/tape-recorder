@@ -1,25 +1,28 @@
-import { useDexie } from 'use-dexie'
-
 import TrackList from './TrackList'
 import useAudioEngine, { State } from './useAudioEngine'
 
-const DB_NAME = 'REC_DB'
-const DB_SCHEMA = {
-  // `audio` is omitted, the docs say not to index binary data
-  tracks: 'created, duration, &id, name',
+import db from '../db'
+
+if (process.env.NODE_ENV) {
+  // @ts-expect-error
+  window.db = db
 }
 
 const App = () => {
-  // Initialize local database
-  useDexie(DB_NAME, DB_SCHEMA)
   const { play, status, toggleRecord, tracks } = useAudioEngine()
-
   return (
     <>
       {/* for debugging */}
-      {process.env.NODE_ENV === 'development' && <div>{State[status]}</div>}
-      <TrackList onPlay={play} tracks={tracks} />
+      {process.env.NODE_ENV === 'development' && (
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>{State[status]}</div>
+          <button onClick={() => db.deleteAll()} style={{ font: 'monospace' }}>
+            rm -rf
+          </button>
+        </div>
+      )}
 
+      <TrackList onPlay={play} tracks={tracks} />
       <button class="record" onClick={toggleRecord}>
         REC
       </button>
