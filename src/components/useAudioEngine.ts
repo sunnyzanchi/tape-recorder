@@ -102,7 +102,7 @@ const useAudioEngine = (): AudioEngine => {
   const addTrack = useDexiePutItem<Track>('tracks')
   const audio = useRef<HTMLAudioElement>()
   // This gets filled up with Blobs as mediaRecorder records.
-  // We later consilidate it into one Blob, which is the binary data
+  // We later consolidate it into one Blob, which is the binary data
   // that can be written out as a file
   const chunks = useRef<Blob[]>([])
 
