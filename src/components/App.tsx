@@ -1,17 +1,7 @@
-import { useDexie } from 'use-dexie'
-
 import TrackList from './TrackList'
 import useAudioEngine, { State } from './useAudioEngine'
 
-const DB_NAME = 'REC_DB'
-const DB_SCHEMA = {
-  // `audio` is omitted, the docs say not to index binary data
-  tracks: 'created, duration, &id, name',
-}
-
 const App = () => {
-  // Initialize local database
-  useDexie(DB_NAME, DB_SCHEMA)
   const { play, status, toggleRecord, tracks } = useAudioEngine()
 
   return (

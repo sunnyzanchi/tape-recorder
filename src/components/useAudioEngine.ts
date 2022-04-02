@@ -1,7 +1,6 @@
 import useStateMachine, { t } from '@cassiozen/usestatemachine'
 import { format } from 'date-fns'
 import { useRef, useState } from 'preact/hooks'
-import { useDexieMap, useDexiePutItem } from 'use-dexie'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Track } from './TrackList'
@@ -55,10 +54,7 @@ interface AudioEngine {
 const useAudioEngine = (): AudioEngine => {
   const [startTime, setStartTime] = useState<number | null>(null)
   const [stopTime, setStopTime] = useState<number | null>(null)
-  // useDexie automatically keys off the primary key of the table.
-  // So key is id, value is the track object
-  const tracks = useDexieMap<string, Track>('tracks') || new Map()
-  const addTrack = useDexiePutItem<Track>('tracks')
+  const [tracks, setTracks] = useState(new Map<string, Track>())
   const audio = useRef<HTMLAudioElement | null>()
   // This gets filled up with Blobs as mediaRecorder records.
   // We later consolidate it into one Blob, which is the binary data
@@ -167,7 +163,7 @@ const useAudioEngine = (): AudioEngine => {
           })
           const track = makeTrack({ audio, duration: stopTime! - startTime! })
 
-          addTrack(track)
+          setTracks(tracks => new Map(tracks).set(track.id, track))
           send(Event.IDLE)
 
           return () => {
