@@ -1,7 +1,7 @@
 import { useDexie } from 'use-dexie'
 
 import TrackList from './TrackList'
-import useAudioEngine, { Status } from './useAudioEngine'
+import useAudioEngine, { State } from './useAudioEngine'
 
 const DB_NAME = 'REC_DB'
 const DB_SCHEMA = {
@@ -17,7 +17,7 @@ const App = () => {
   return (
     <>
       {/* for debugging */}
-      {process.env.NODE_ENV === 'development' && <div>{Status[status]}</div>}
+      {process.env.NODE_ENV === 'development' && <div>{State[status]}</div>}
       <TrackList onPlay={play} tracks={tracks} />
 
       <button class="record" onClick={toggleRecord}>
