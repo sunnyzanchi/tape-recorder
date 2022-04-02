@@ -1,15 +1,8 @@
 import { FunctionalComponent } from 'preact'
 import { formatDuration } from 'date-fns'
 
+import { Track } from '../db'
 import './TrackList.scss'
-
-export type Track = {
-  audio: Blob
-  created: Date
-  duration: number
-  id: string
-  name: string
-}
 
 type Props = {
   onPlay: (name: Track['name']) => unknown

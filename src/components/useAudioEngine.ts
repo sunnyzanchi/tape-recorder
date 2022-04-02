@@ -1,9 +1,10 @@
 import useStateMachine, { t } from '@cassiozen/usestatemachine'
 import { format } from 'date-fns'
+import { useLiveQuery } from 'dexie-react-hooks'
 import { useRef, useState } from 'preact/hooks'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Track } from './TrackList'
+import db, { Track } from '../db'
 
 // These trigger transitions between states
 // of the state machine.
@@ -54,7 +55,8 @@ interface AudioEngine {
 const useAudioEngine = (): AudioEngine => {
   const [startTime, setStartTime] = useState<number | null>(null)
   const [stopTime, setStopTime] = useState<number | null>(null)
-  const [tracks, setTracks] = useState(new Map<string, Track>())
+  const addTrack = (track: Track) => db.addTrack(track)
+  const tracks = useLiveQuery(() => db.getTracks()) ?? new Map()
   const audio = useRef<HTMLAudioElement | null>()
   // This gets filled up with Blobs as mediaRecorder records.
   // We later consolidate it into one Blob, which is the binary data
@@ -163,7 +165,7 @@ const useAudioEngine = (): AudioEngine => {
           })
           const track = makeTrack({ audio, duration: stopTime! - startTime! })
 
-          setTracks(tracks => new Map(tracks).set(track.id, track))
+          addTrack(track)
           send(Event.IDLE)
 
           return () => {
