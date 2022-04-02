@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import { useEffect, useRef, useState } from 'preact/hooks'
+import { useDexieMap, useDexiePutItem } from 'use-dexie'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Track } from './TrackList'
@@ -68,6 +69,7 @@ const makeTrack = ({
 }): Track => ({
   id: uuidv4(),
   audio,
+  created: new Date(),
   duration,
   name: format(new Date(), 'MMMM do yyyy @ h:mma'),
 })
@@ -94,7 +96,10 @@ const useAudioEngine = (): AudioEngine => {
   // if we're already playing a track and need to stop
   // the old one before we start the new one
   const [switchTo, setSwitchTo] = useState<string | null>(null)
-  const [tracks, setTracks] = useState(new Map<string, Track>())
+  // useDexie automatically keys off the primary key of the table.
+  // So key is id, value is the track object
+  const tracks = useDexieMap<string, Track>('tracks') || new Map()
+  const addTrack = useDexiePutItem<Track>('tracks')
   const audio = useRef<HTMLAudioElement>()
   // This gets filled up with Blobs as mediaRecorder records.
   // We later consilidate it into one Blob, which is the binary data
@@ -161,7 +166,7 @@ const useAudioEngine = (): AudioEngine => {
       })
       const track = makeTrack({ audio, duration: stopTime! - startTime! })
 
-      setTracks((ts) => new Map(ts).set(track.id, track))
+      addTrack(track)
       setMediaRecorder(null)
       setAudioReady(false)
       // If chunks isn't reset, every recording will be cumulative.
