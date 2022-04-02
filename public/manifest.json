@@ -1,0 +1,21 @@
+{
+  "background_color": "#f62f2f",
+  "description": "Record and play back audio",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "name": "REC",
+  "short_name": "REC",
+  "start_url": "/",
+  "theme_color": "#f62f2f"
+}

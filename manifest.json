@@ -1,8 +1,0 @@
-{
-  "background_color": "#f62f2f",
-  "description": "Record and play back audio",
-  "display": "standalone",
-  "name": "REC",
-  "short_name": "REC",
-  "theme_color": "#f62f2f"
-}
