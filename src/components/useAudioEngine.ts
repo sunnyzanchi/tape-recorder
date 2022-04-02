@@ -6,8 +6,6 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { Track } from './TrackList'
 
-type ObjectOf<T> = { [key: string]: T }
-type AudioState = ObjectOf<boolean>
 // These trigger transitions between states
 // of the state machine.
 enum Event {
