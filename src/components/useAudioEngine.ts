@@ -2,7 +2,7 @@ import useStateMachine, { t } from '@cassiozen/usestatemachine'
 import { format } from 'date-fns'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useRef, useState } from 'preact/hooks'
-import { v4 as uuidv4 } from 'uuid'
+import { nanoid } from 'nanoid'
 
 import db, { Track } from '../db'
 
@@ -38,7 +38,7 @@ const makeTrack = ({
   audio: Blob
   duration: number
 }): Track => ({
-  id: uuidv4(),
+  id: nanoid(),
   audio,
   created: new Date(),
   duration,
