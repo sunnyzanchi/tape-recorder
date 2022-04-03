@@ -18,7 +18,9 @@
     "dexie": "^3.2.1",
     "dexie-react-hooks": "^1.1.1",
     "nanoid": "^3.3.2",
-    "preact": "^10.5.15"
+    "preact": "^10.5.15",
+    "react-reduce-motion": "^2.0.2",
+    "react-spring": "^9.4.4"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.1.5",

@@ -1,5 +1,8 @@
-import cx from 'classnames'
+import { useEffect } from 'preact/hooks'
+import { useReduceMotion } from 'react-reduce-motion'
+import { Globals } from 'react-spring'
 
+import RecButton from './RecButton'
 import TrackList from './TrackList'
 import useAudioEngine, { State } from './useAudioEngine'
 
@@ -11,8 +14,13 @@ if (process.env.NODE_ENV) {
 }
 
 const App = () => {
+  const prefersReducedMotion = useReduceMotion()
   const { play, status, toggleRecord, tracks } = useAudioEngine()
   const recording = status === State.RECORDING
+
+  useEffect(() => {
+    Globals.assign({ skipAnimation: prefersReducedMotion })
+  }, [prefersReducedMotion])
 
   const changeName = (name: string, track: Track) => {
     const newTrack = {
@@ -21,6 +29,7 @@ const App = () => {
     }
     db.tracks.put(newTrack)
   }
+
   return (
     <>
       {/* for debugging */}
@@ -40,10 +49,7 @@ const App = () => {
       )}
 
       <TrackList onPlay={play} onEditName={changeName} tracks={tracks} />
-      <button class={cx('record', { recording })} onClick={toggleRecord}>
-        <p>{recording ? 'STOP' : 'REC'}</p>
-        {recording && <div class="recording">Recording</div>}
-      </button>
+      <RecButton onClick={toggleRecord} recording={recording} />
     </>
   )
 }

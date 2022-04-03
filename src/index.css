@@ -1,14 +1,3 @@
-@keyframes slidein {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 @keyframes pulse {
   from {
     opacity: 0;
@@ -76,6 +65,7 @@ button.record {
   font-family: 'Cousine', sans-serif;
   font-size: 20px;
   height: 110px;
+  padding: 0;
   place-items: center;
   position: fixed;
   right: var(--spacing);
@@ -91,18 +81,15 @@ button.record:hover {
 button.record div {
   color: var(--c-text);
   font-size: 14px;
+  justify-self: flex-end;
   pointer-events: none;
   position: absolute;
-  top: -32px;
+  top: -28px;
 }
 
 button.record .recording {
-  animation: 160ms slidein ease-out;
   align-items: baseline;
   display: flex;
-}
-
-button.record .waiting {
 }
 
 div.recording::after {
