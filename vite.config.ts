@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import preact from '@preact/preset-vite'
+import analyze from 'rollup-plugin-analyzer'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,5 +11,13 @@ export default defineConfig({
     // https://github.com/vitejs/vite/issues/5532
     polyfillModulePreload: false,
   },
-  plugins: [preact()],
+  plugins: [
+    analyze({
+      filter: (module) => module.percent > 1,
+      onAnalysis: () =>
+        console.log('\n\nAnalysis of modules >= 1% of the total bundle size:'),
+      summaryOnly: true,
+    }),
+    preact(),
+  ],
 })
