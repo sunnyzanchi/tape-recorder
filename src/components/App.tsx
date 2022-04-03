@@ -1,4 +1,4 @@
-import { useEffect } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { useReduceMotion } from 'react-reduce-motion'
 import { Globals } from 'react-spring'
 
@@ -15,6 +15,7 @@ if (process.env.NODE_ENV) {
 
 const App = () => {
   const prefersReducedMotion = useReduceMotion()
+  const [searchTerm, setSearchTerm] = useState<string | null>(null)
   const { play, status, toggleRecord, tracks } = useAudioEngine()
   const recording = status === State.RECORDING
 
@@ -48,7 +49,22 @@ const App = () => {
         </div>
       )}
 
-      <TrackList onPlay={play} onEditName={changeName} tracks={tracks} />
+      <input
+        class="search"
+        onChange={(e) => setSearchTerm(e.currentTarget.value)}
+        placeholder="Search"
+        value={searchTerm ?? ''}
+      />
+
+      <TrackList
+        onPlay={play}
+        onEditName={changeName}
+        tracks={
+          searchTerm
+            ? tracks.filter((t) => t.name.includes(searchTerm))
+            : tracks
+        }
+      />
       <RecButton onClick={toggleRecord} recording={recording} />
     </>
   )
