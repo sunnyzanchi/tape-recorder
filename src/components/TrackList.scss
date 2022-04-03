@@ -1,3 +1,12 @@
+@keyframes fadein {
+  from {
+    background: var(--c-bg);
+  }
+  to {
+    background: var(--c-selected);
+  }
+}
+
 .track-list {
   list-style: none;
   margin: 0;
@@ -6,20 +15,43 @@
   li {
     border-bottom: 1px solid var(--c-border);
     cursor: pointer;
-    padding: 24px;
+    padding: 16px 24px 16px 24px;
     transition: 100ms background-color var(--snappy);
   }
 
   li:hover {
-    background: #131313;
+    background: var(--c-hover);
   }
 
   .track-duration {
     font-size: 16px;
   }
 
-  .track-title {
+  .track-name {
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    color: inherit;
+    display: inline-block;
     font-size: 20px;
+    padding: 8px 0;
     margin-bottom: 8px;
+    width: 60%;
+  }
+
+  input.track-name {
+    animation: 120ms fadein var(--snappy);
+    background: var(--c-selected);
+    border: 0;
+    border-bottom: 1px solid var(--c-border);
+    font-family: inherit;
+    padding-left: 8px;
+    margin: 0 0 8px -8px;
+    width: 60%;
+    transition: 120ms border-bottom-color var(--snappy);
+
+    &:focus {
+      outline: none;
+      border-bottom: 1px solid var(--c-active);
+    }
   }
 }
