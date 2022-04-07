@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'preact/hooks'
-import { useReduceMotion } from 'react-reduce-motion'
-import { Globals } from 'react-spring'
+import { useState } from 'preact/hooks'
 
 import RecButton from './RecButton'
 import TrackList from './TrackList'
@@ -14,14 +12,9 @@ if (process.env.NODE_ENV) {
 }
 
 const App = () => {
-  const prefersReducedMotion = useReduceMotion()
   const [searchTerm, setSearchTerm] = useState<string | null>(null)
   const { play, status, toggleRecord, tracks } = useAudioEngine()
   const recording = status === State.RECORDING
-
-  useEffect(() => {
-    Globals.assign({ skipAnimation: prefersReducedMotion })
-  }, [prefersReducedMotion])
 
   const changeName = (name: string, track: Track) => {
     const newTrack = {
