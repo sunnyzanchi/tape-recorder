@@ -45,9 +45,13 @@ const makeTrack = ({
   name: format(new Date(), 'MMMM do yyyy @ h:mma'),
 })
 
+type Context = {
+  currentTrack: string | null
+}
+
 interface AudioEngine {
   play: (trackId: string) => void
-  status: State
+  status: [State, Context]
   toggleRecord: () => void
   tracks: Track[]
 }
@@ -68,10 +72,16 @@ const useAudioEngine = (): AudioEngine => {
   const [state, send] = useStateMachine({
     initial: State.IDLE,
     schema: {
+      context: t<Context>(),
+      // The other events don't have values, they just cause transitions,
+      // so we don't need to type them here.
       events: {
         [Event.ERROR]: t<{ error: unknown; state: State }>(),
         [Event.PLAY]: t<{ value: string }>(),
       },
+    },
+    context: {
+      currentTrack: null,
     },
     states: {
       // We aren't doing anything.
@@ -185,7 +195,7 @@ const useAudioEngine = (): AudioEngine => {
       // The state machine will happily go from
       // PLAYING -> PLAYING.
       [State.PLAYING]: {
-        effect: ({ event, send }) => {
+        effect: ({ event, send, setContext }) => {
           // If we're already playing a track and
           // we recieve an event to play another one,
           // we should clean up the old track first.
@@ -208,6 +218,7 @@ const useAudioEngine = (): AudioEngine => {
 
           audio.current = new Audio(url)
           audio.current.play()
+          setContext(() => ({ currentTrack: trackId }))
           audio.current.onended = () => send(Event.IDLE)
 
           return () => {
@@ -215,6 +226,7 @@ const useAudioEngine = (): AudioEngine => {
               audio.current.onended = null
               audio.current.pause()
               audio.current = null
+              setContext(() => ({ currentTrack: null }))
             }
           }
         },
@@ -241,7 +253,7 @@ const useAudioEngine = (): AudioEngine => {
 
   return {
     play: (trackId: string) => send({ type: Event.PLAY, value: trackId }),
-    status: state.value,
+    status: [state.value, state.context],
     toggleRecord: () => {
       if (state.value === State.RECORDING) {
         send(Event.STOP_RECORDING)

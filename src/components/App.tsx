@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks'
 
 import RecButton from './RecButton'
-import TrackList from './TrackList'
+import TrackList, { TrackDisplay } from './TrackList'
 import useAudioEngine, { State } from './useAudioEngine'
 
 import db, { Track } from '../db'
@@ -13,16 +13,22 @@ if (process.env.NODE_ENV) {
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null)
-  const { play, status, toggleRecord, tracks } = useAudioEngine()
+  const {
+    play,
+    status: [status, { currentTrack }],
+    toggleRecord,
+    tracks,
+  } = useAudioEngine()
   const recording = status === State.RECORDING
 
-  const changeName = (name: string, track: Track) => {
-    const newTrack = {
-      ...track,
-      name,
-    }
-    db.tracks.put(newTrack)
+  const update = (track: Track) => {
+    db.tracks.put(track)
   }
+
+  const tracksDisplay: TrackDisplay[] = tracks.map((t) => ({
+    ...t,
+    playing: t.id === currentTrack,
+  }))
 
   return (
     <>
@@ -51,11 +57,11 @@ const App = () => {
 
       <TrackList
         onPlay={play}
-        onEditName={changeName}
+        onUpdate={update}
         tracks={
           searchTerm
-            ? tracks.filter((t) => t.name.includes(searchTerm))
-            : tracks
+            ? tracksDisplay.filter((t) => t.name.includes(searchTerm))
+            : tracksDisplay
         }
       />
       <RecButton onClick={toggleRecord} recording={recording} />

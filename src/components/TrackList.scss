@@ -31,17 +31,66 @@
 
   li {
     border-bottom: 1px solid var(--c-border);
-    cursor: pointer;
-    padding: 16px 24px 16px 24px;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    padding: 0;
     transition: 100ms background-color var(--snappy);
   }
 
-  li:hover {
+  li.expanded {
+    height: 320px;
+  }
+
+  // li:hover {
+  //   background: var(--c-hover);
+  // }
+
+  .play-button {
+    --size: 100px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    display: grid;
+    height: var(--size);
+    place-items: center;
+    grid-row: 1 / 3;
+    width: var(--size);
+  }
+
+  .play-button:hover {
     background: var(--c-hover);
+  }
+
+  .play-icon {
+    border: 10px solid transparent;
+    border-left: 14px solid #eee;
+    margin-left: 12px;
+  }
+
+  .pause-icon {
+    background: transparent;
+    border-left: 5px solid #eee;
+    border-right: 5px solid #eee;
+    height: 18px;
+    width: 16px;
   }
 
   .track-duration {
     font-size: 16px;
+  }
+
+  .track-info {
+    align-content: center;
+    cursor: pointer;
+    display: grid;
+    gap: 8px;
+    grid-row: 1 / 3;
+    place-items: center left;
+    padding: 16px 24px 16px 32px;
+  }
+
+  .track-info:hover {
+    background-color: var(--c-hover);
   }
 
   .track-name {
@@ -50,8 +99,5 @@
     color: inherit;
     display: inline-block;
     font-size: 20px;
-    padding: 8px 0;
-    margin-bottom: 8px;
-    width: 60%;
   }
 }
